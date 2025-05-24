@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Planly</title>
+  <link rel="stylesheet" href="_assets/css/style.css">
+  <link rel="stylesheet" href="_assets/css/reset.css">
+  <link rel="icon" type="image/png" href="_assets/icons/icon.svg"/>
+</head>
+<body>
+  <header class="cabeçalho">
+    <h1>PLAN<span class="p2">LY</span></h1>
+    <label class="switch">
+      <input type="checkbox" id="themeToggle">
+      <span class="slider"></span>
+    </label>
+    <img src="_assets/icons/logo.svg" alt="logo-planly">
+  </header>
+
+  <section class="container">
+    <div class="text-content">
+      <h1>Sua rotina,<br>do seu jeito.</h1>
+      <p>Crie a rotina de estudos perfeita <br> para alcançar o seu melhor desempenho.</p>
+      <button class="button" id="saibaMais">Saiba mais</button>
+    </div>
+    <div class="image-content">
+      <img src="_assets/img/background-notebook.jpg" alt="background-notebook">
+    </div>
+  </section>
+
+  <main id="formulario">
+    <form class="main">
+      <div>
+        <h1>Escreva aqui os detalhes da sua rotina</h1>
+        <textarea id="rotina"></textarea>
+      </div>
+      <div>
+        <h1>Sobre o que você quer estudar?</h1>
+        <input type="text" id="interesse" list="opcoes">
+        <datalist id="opcoes">
+          <option value="Programação">
+          <option value="Enem">
+          <option value="Matemática">
+          <option value="Inglês">
+        </datalist>
+      </div>
+      <div class="botoes">
+        <button class="button" id="gerar">GERAR</button>
+        <button class="button" id="analisar">ANALISAR</button>
+      </div>
+    </form>
+  </main>
+
+  <section class="container">
+    <div class="text-content">
+      <h1>Exemplo<br>simples.</h1>
+      <div class="exemplo-form">
+        <p>Possuo o final de semana todo livre.</p>
+        <button class="button" id="gerarExemplo">GERAR</button>
+      </div>
+    </div>
+    <div class="image-content">
+      <img src="_assets/img/background-tasks.jpg" alt="Checklist">
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="apoie">
+        <h4>apoie meu projeto</h4>
+        <ul>
+          <li><img src="_assets/icons/github.svg" alt="github"><a href="https://github.com/dappter/Planly">github.com/dappter/Planly</a></li>
+          <li><img src="_assets/icons/linkedin.svg" alt="linkedin"><a href="https://www.linkedin.com/in/jos%C3%A9-guilherme-rodrigues-l%C3%B3ssio-417237323/">José Guilherme Rodrigues Lóssio</a></li>
+        </ul>
+      </div>
+      <div class="contatos">
+        <h4>entre em contato</h4>
+        <ul>
+          <li><img src="_assets/icons/gmail.svg" alt="gmail"><a href="mailto:guilhermelossio3@gmail.com">guilhermelossio3@gmail.com</a></li>
+          <li><img src="_assets/icons/phone.svg" alt="telefone"><a href="tel:+558899758371">+55 (88) 9975-8371</a></li>
+          <li><img src="_assets/icons/discord.svg" alt="discord"><a href="https://discord.com/users/514121475402235907">@ze144p</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  const gerarBtn = document.getElementById('gerar');
+  const analisarBtn = document.getElementById('analisar');
+  const textArea = document.querySelector('textarea');
+  const inputEstudo = document.querySelector('input[list="opcoes"]');
+
+  async function enviarDados(url) {
+    const dados = {
+      rotina: textArea.value,
+      interesse: inputEstudo.value
+    };
+
+    const loader = document.getElementById('loading');
+    loader.style.display = 'flex'; // Mostra o loading
+
+    try {
+      const resposta = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dados)
+      });
+
+      if (!resposta.ok) {
+        const erroJson = await resposta.json();
+        alert('Erro: ' + (erroJson.erro || 'Erro desconhecido'));
+        loader.style.display = 'none';
+        return;
+      }
+
+      const json = await resposta.json();
+
+      // Remove modal antigo se existir
+      const modalAntigo = document.getElementById('modalResultado');
+      if (modalAntigo) modalAntigo.remove();
+
+      // Cria modal com resultado
+      const modal = document.createElement('div');
+      modal.id = 'modalResultado';
+      modal.className = 'modal-resultado';
+      modal.innerHTML = `
+        <div class="modal-content">
+          <button class="fechar-btn" title="Fechar resultado">&times;</button>
+          <h2>Seu plano está pronto!</h2>
+          <pre>${json.resultado || json.erro}</pre>
+        </div>
+      `;
+
+      document.body.appendChild(modal);
+
+      // Scroll para o modal (opcional)
+      modal.scrollIntoView({ behavior: 'smooth' });
+
+      // Evento fechar modal
+      modal.querySelector('.fechar-btn').addEventListener('click', () => {
+        modal.remove();
+      });
+
+      // Fechar modal clicando fora da caixa de conteúdo
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.remove();
+        }
+      });
+
+    } catch (err) {
+      alert('Erro ao conectar com o servidor: ' + err.message);
+    } finally {
+      loader.style.display = 'none'; // Oculta o loading
+    }
+  }
+
+  gerarBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    enviarDados('http://127.0.0.1:5000/gerar');
+  });
+
+  analisarBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    enviarDados('http://127.0.0.1:5000/analisar');
+  });
+</script>
+<div id="loading" style="display: none;">
+  <div class="loader"></div>
+  <p style="color: #1e1e1e;">Gerando plano de estudos...</p>
+</div>
+</body>
+</html>
