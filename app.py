@@ -8,15 +8,15 @@ import google.api_core.exceptions
 app = Flask(__name__)
 CORS(app)
 
-
 load_dotenv()  # Carrega o arquivo .env
 
 api_key = os.getenv("API_KEY")
 
+if not api_key:
+    raise Exception("A variável de ambiente API_KEY não está definida!")
 
-# Configure sua API Key
-os.environ["GOOGLE_API_KEY"] = api_key
-genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+# Configure sua API Key diretamente, sem sobrescrever os.environ
+genai.configure(api_key=api_key)
 
 modelo = genai.GenerativeModel("gemini-2.0-flash")
 
