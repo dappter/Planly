@@ -1,112 +1,102 @@
-# Planly
+# 📚 Planly
 
-> **Seu assistente inteligente para planejamento de estudos personalizado.**
+_Organizador de rotina para estudos com IA._
+
+![Repo Size](https://img.shields.io/github/repo-size/dappter/Planly)
+![Last Commit](https://img.shields.io/github/last-commit/dappter/Planly)
+![MIT License](https://img.shields.io/github/license/dappter/Planly)
+
+<img src="docs/assets/img/banner-planly.png" alt="Banner do Planly" style="width: 100%; max-width: 800px;" />
 
 ---
 
 ## 🚀 Sobre o Planly
 
-Planly é uma aplicação inovadora que utiliza inteligência artificial para analisar sua rotina diária e criar planos de estudo sob medida, otimizando seu tempo e potencializando seu aprendizado. Com uma interface intuitiva e simples, Planly é ideal para estudantes de qualquer área que buscam maximizar seus resultados com organização e tecnologia de ponta.
+Planly é uma aplicação inovadora que utiliza inteligência artificial para analisar sua rotina diária e criar planos de estudo sob medida, otimizando seu tempo e potencializando seu aprendizado.  
+Com uma interface intuitiva e simples, é ideal para estudantes de qualquer área que buscam maximizar seus resultados com organização e tecnologia de ponta.
 
 ---
 
-## 🎯 Funcionalidades
+## 🖼️ Prévia da Interface
 
-- **Identificação da rotina:** Entenda como sua rotina impacta seu tempo disponível para estudos.  
-- **Plano personalizado:** Receba um cronograma de estudos adaptado aos seus horários e interesses.  
-- **Flexibilidade:** Ajuste seus objetivos e áreas de estudo conforme sua necessidade.  
-- **Interatividade:** Interface prática e fácil de usar, com respostas rápidas e objetivas.  
+| Tema Claro | Tema Escuro |
+|-------------|-------------|
+| ![Claro Desktop](https://github.com/user-attachments/assets/ddb48432-f21c-405e-88dd-4ebcbc05c58d) | ![Escuro Desktop](https://github.com/user-attachments/assets/1432582d-8644-49df-941b-2bfe17459094) |
+| ![Claro Android](https://github.com/user-attachments/assets/099dc19f-07d9-402c-8a16-a91673a3b748) | ![Escuro Android](https://github.com/user-attachments/assets/fc9a50db-adad-4548-b355-ef2f03a927f9) |
 
 ---
 
-## 🛠️ Tecnologias utilizadas
+## ⚙️ Funcionalidades
 
-- Python <img src="https://github.com/user-attachments/assets/b645b684-fc64-43bc-b05d-a69567dec889" width="16" height="16" alt="Python Icon">
-- Google Generative AI (Gemini) ![gemini-color](https://github.com/user-attachments/assets/aca6f090-81e8-4d52-81e5-ea31e3c6c194)  
-- IPython Widgets para interação no Jupyter/Colab ![colab-color](https://github.com/user-attachments/assets/815d90d6-bd4d-4c09-a9ab-5d59899d5ec4)
-- Markdown para exibição formatada <img src="https://github.com/user-attachments/assets/694bf5c6-d6ad-44ba-8ad1-f1b7949850d1" width="16" height="16" alt="Markdown Icon">
-- Git e GitHub para versionamento e colaboração ![github](https://github.com/user-attachments/assets/d573ac55-98a9-4e2f-8c32-5230228074cd)
+- ✅ Criação e gerenciamento de tarefas de estudo  
+- 🧠 Sugestões inteligentes para organizar sua rotina via Gemini API  
+- 🎨 Alterar tema (em desenvolvimento)  
+- 📱 Responsivo (em desenvolvimento)  
+- 🕒 Identificação da rotina: entenda como sua rotina impacta seu tempo disponível  
+- 🧩 Plano personalizado: receba um cronograma adaptado aos seus horários e interesses  
+- 🔄 Flexibilidade: ajuste seus objetivos e áreas de estudo conforme necessário  
+- 💡 Interatividade: interface prática, rápida e fácil de usar 
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+### 💻 Front-end
+- ![HTML](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)  
+- ![CSS](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white)  
+- ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)  
+
+### 🧠 Inteligência Artificial
+- ![Gemini](https://img.shields.io/badge/Gemini-Google-blue?style=flat&logo=google)
+
+### 🐍 Back-end
+- ![Python](https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white)  
+- ![Flask](https://img.shields.io/badge/Flask-000000?style=flat&logo=flask&logoColor=white)
+
+### 🌐 Controle de versão
+- ![Git](https://img.shields.io/badge/Git-F05032?style=flat&logo=git&logoColor=white)  
+- ![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white)
+---
+
+## 🌐 Link do Site
+
+🔗 Acesse: [https://dappter.github.io/Planly/](https://dappter.github.io/Planly/)
 
 ---
 
 ## 📸 Funcionamento
 
-![Demo do Planly](https://i.imgur.com/u5tqJMP.gif)
+![Funcionamento do Planly](https://github.com/user-attachments/assets/cb6dbe71-5ec8-4d53-91ae-78830a1601e2)
 
 ---
 
-## 🚀 Como usar
+## 🧪 Como usar
 
-1. Clone o repositório no google colab: ![colab-color](https://github.com/user-attachments/assets/815d90d6-bd4d-4c09-a9ab-5d59899d5ec4)
-   ```bash
-   git clone https://github.com/dappter/Planly.git
-   cd Planly
-Instale as dependências:
+1. Acesse o site do Planly.
+2. Clique em **"Saiba mais"** ou **role a página até o formulário**.
+3. Preencha os campos com os **detalhes da sua rotina** — inclua tarefas, horários, prioridades e qualquer outra informação relevante.
+4. Clique no botão **"Gerar"**.
+5. Aguarde alguns segundos enquanto o Planly cria um plano de rotina personalizado para você.
 
-- bash
-- Copiar
-- Editar
+---
 
-- pip install -r requirements.txt
+## 📌 Roadmap
 
-- Configure sua API Key no arquivo .env ou diretamente no código.
+- [x] Gerar rotina personalizada com IA  
+- [x] Modo escuro e claro  
+- [ ] Layout mobile responsivo  
+- [ ] Cadastro de usuário  
+- [ ] Histórico de rotinas geradas  
 
-- para criar uma API Key olhe esse tutorial: https://www.youtube.com/watch?v=SVOT_mSNXGc&t=1s 
-________________________________________________________________________________________________________________
-Execute o notebook ou script:
+---
 
-bash
-Copiar
-Editar
-jupyter notebook planly.ipynb
+## 👨‍💻 Autor
 
-## 🤝 Contribuição
-Contribuições são super bem-vindas! Para colaborar:
+Desenvolvido por [José Guilherme](https://www.linkedin.com/in/jose-guilherme-417237323)  
+📧 Gmal: guilhermelossio3@gmail.com
 
---> Faça um fork do projeto
+---
 
---> Crie uma branch com sua feature: git checkout -b minha-feature
+## 🏷️ Licença
 
---> Faça commit das suas alterações: git commit -m "Minha contribuição"
-
---> Faça push para a branch: git push origin minha-feature
-
---> Abra um Pull Request aqui no GitHub
-
-## 🚀 Como usar (sem instalar nada)
-
-👉 Passo 1: Abrir o Google Colab ![colab-color](https://github.com/user-attachments/assets/815d90d6-bd4d-4c09-a9ab-5d59899d5ec4)
-
-Acesse: https://colab.research.google.com
-
-Clique em "Novo notebook" (ícone de + no canto inferior direito ou no topo).
-
-**👉 Passo 2: Copiar o código**
-
-Copie todo o código que está neste repositório (planly.py).
-
-Cole o código dentro da primeira célula do Colab.
-
-**👉 Passo 3: Criar chave API**
-
-Acesse: https://aistudio.google.com/prompts/new_chat
-
-Clique em "Get API Key" e copie sua chave API
-
-No Google Colab, cole a chave API dentro das aspas onde se encontra o comentário "# <-- Substitua pela sua API Key" (linha 9)
-
-No Google Colab, clique no ícone de chave "🗝" no canto esquerdo e ative a opção "GOOGLE_API_KEY"
-
-**👉 Passo 4: Rodar o código**
-
-Clique no botão play ▶️ que aparece à esquerda da célula (ou pressione Shift + Enter).
-
-Se o código pedir para carregar um arquivo (como uma planilha), ele mostrará um botão para fazer upload.
-
-_O processo pode demorar alguns segundos portanto não execute várias vezes simultâneamente_
-
-________________________________________________________________________________________________________________
- 
-## 📬 Contato
-Se tiver dúvidas, sugestões ou quiser colaborar, me envie um e-mail:
-guilhermelossio3@gmail.com
+> Este projeto está licenciado sob a MIT License.
