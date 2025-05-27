@@ -19,7 +19,7 @@ Com uma interface intuitiva e simples, é ideal para estudantes de qualquer áre
 
 ## 🖼️ Prévia da Interface
 
-| Tema Claro | Tema Escuro |
+| Tema Escuro | Tema Claro |
 |-------------|-------------|
 | ![Claro Desktop](https://github.com/user-attachments/assets/ddb48432-f21c-405e-88dd-4ebcbc05c58d) | ![Escuro Desktop](https://github.com/user-attachments/assets/1432582d-8644-49df-941b-2bfe17459094) |
 | ![Claro Android](https://github.com/user-attachments/assets/099dc19f-07d9-402c-8a16-a91673a3b748) | ![Escuro Android](https://github.com/user-attachments/assets/fc9a50db-adad-4548-b355-ef2f03a927f9) |
