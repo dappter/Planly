@@ -1,0 +1,80 @@
+/* ================================
+   Base e Tipografia
+================================== */
+
+body {
+  margin: 0;
+  background-color: #ffffff;
+  font-family: 'Telegraf', sans-serif;
+}
+
+h1, h2, h3, h4, p {
+  color: white;
+  font-family: 'Telegraf', sans-serif;
+}
+
+button {
+  font-family: 'Telegraf', sans-serif;
+  font-weight: bold;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* ================================
+   Layout e Elementos Visuais
+================================== */
+
+span {
+  display: flex;
+}
+
+/* ================================
+   Imagens
+================================== */
+
+div img {
+  width: 450px;
+  height: 510px;
+  border-radius: 5px;
+  object-fit: cover;
+}
+
+/* ================================
+   Rodapé (Footer)
+================================== */
+
+footer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+footer img {
+  width: 45px;
+  height: 45px;
+  margin-right: 0.5rem;
+}
+
+footer ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+footer li {
+  list-style: none;
+}
+
+footer li a {
+  color: #A6A6A6;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+footer li a:hover {
+  color: #ffffff;
+}
