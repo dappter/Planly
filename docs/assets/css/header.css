@@ -1,0 +1,97 @@
+/* ========================
+   Layout do Cabeçalho
+======================== */
+
+.header{
+    background-color: #1E1E1E;
+}
+
+.header .container {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 70px;
+    align-items: center;
+    padding: 0 2rem;
+}
+
+.branding{
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.logo{
+    height: 65px;
+    width: 65px;
+    object-fit: contain;
+}
+
+
+/* ========================
+   Título do Cabeçalho
+======================== */
+
+.header h1 {
+    color: #fff;
+    font-weight: bold;
+    font-size: 40px;
+}
+
+.p2 {
+    color: #8C52FF;
+}
+
+/* ========================
+   Botão de Alternar Tema
+======================== */
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 142px;
+    height: 67px;
+}
+  
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    cursor: pointer;
+    background-color: #1e1e1e;
+    border: 2px solid #ffffff;
+    border-radius: 34px;
+
+    transition: background-color 0.4s;
+}
+
+.slider::before {
+    content: "";
+    position: absolute;
+
+    width: 55px;
+    height: 55px;
+    left: 5px;
+    bottom: 4.6px;
+
+    background-color: #ffffff;
+    border-radius: 50%;
+
+    transition: transform 0.4s;
+}
+
+input:checked + .slider {
+    background-color: #2196f3;
+}
+
+input:checked + .slider::before {
+    transform: translateX(73px);
+}
