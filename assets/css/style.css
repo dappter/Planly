@@ -1,0 +1,22 @@
+/* ========================
+   Cabeçalho e Fontes
+======================== */
+
+@import "../fonts/fonts.css";
+@import "./header.css";
+
+/* ========================
+        Site
+======================== */
+@import "./section.css";
+@import "./form.css";
+@import "./exemple.css";
+@import "./footer.css";
+
+/* ========================
+        Card do resultado
+======================== */
+@import "./result.css";
+
+
+  
