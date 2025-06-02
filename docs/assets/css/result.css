@@ -168,3 +168,57 @@
   0%   { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+  @media (max-width: 720px) {
+  .resultado {
+    padding: 0 10px;
+    margin: 20px auto;
+  }
+
+  .resultado-card {
+    padding: 20px;
+    font-size: 14px;
+  }
+
+  .resultado-card pre {
+    padding: 12px;
+    font-size: 13px;
+  }
+
+  .modal-resultado {
+    padding: 10px;
+    align-items: flex-start;
+  }
+
+  .modal-content {
+    padding: 20px;
+    max-width: 100%;
+    max-height: 90vh;
+    border-radius: 10px;
+  }
+
+  .modal-content h2 {
+    font-size: 22px;
+  }
+
+  .modal-content pre {
+    font-size: 14px;
+    padding: 15px;
+  }
+
+  .modal-content .fechar-btn {
+    font-size: 24px;
+    top: 10px;
+    right: 10px;
+  }
+
+  .fechar-btn {
+    font-size: 24px;
+  }
+
+  .loader {
+    width: 40px;
+    height: 40px;
+    border-width: 5px;
+  }
+}

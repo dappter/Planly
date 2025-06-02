@@ -81,3 +81,34 @@ form.formulario {
   color: #1e1e1e;
   border: 2px solid #8c52ff;
 }
+
+  @media (max-width: 720px) {
+  form.formulario {
+    padding: 20px;
+    gap: 20px;
+    width: 90%;
+    max-width: 550px;
+    margin: 0 auto;
+  }
+
+  .form-group {
+    max-width: 100%;
+  }
+
+  .formulario textarea {
+    height: 180px;
+  }
+
+  .botoes {
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    align-items: center;
+  }
+
+  .formulario .button {
+    width: 100%;
+    max-width: 280px;
+    font-size: 24px;
+  }
+}

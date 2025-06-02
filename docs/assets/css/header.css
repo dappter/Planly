@@ -35,11 +35,33 @@
     color: #fff;
     font-weight: bold;
     font-size: 40px;
+    display: flex;
+    flex-direction: column;
 }
 
 .p2 {
     color: #8C52FF;
 }
+
+    @media (max-width:720px) {
+        .header .container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header h1 {
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .logo {
+            order: -1;
+        }
+    }
 
 /* ========================
    Botão de Alternar Tema
@@ -95,3 +117,21 @@ input:checked + .slider {
 input:checked + .slider::before {
     transform: translateX(73px);
 }
+
+    @media (max-width:720px) {
+        .switch {
+            width: 130px;
+            height: 60px;
+        }
+        .slider::before {
+            width: 48px;
+            height: 48px;
+            left: 6px;
+            bottom: 4px;
+        }
+
+        input:checked + .slider::before {
+            transform: translateX(66px);
+        }
+
+    }
