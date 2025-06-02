@@ -129,9 +129,36 @@ input:checked + .slider::before {
             left: 6px;
             bottom: 4px;
         }
-
+    
         input:checked + .slider::before {
             transform: translateX(66px);
         }
-
     }
+    @media (max-width: 422px) {
+    .header .container {
+        gap: 15px;
+        padding: 1rem;
+    }
+
+    .header h1 {
+        font-size: 24px;
+    }   
+
+    .switch {
+        width: 120px;
+        height: 48px;
+    }
+
+    .slider::before {
+        width: 35px;
+        height: 35px;
+        left: 5px;
+        bottom: 5px;
+        transition: transform 0.4s;
+    }
+
+    input:checked + .slider::before {
+        transform: translateX(73px);
+    }
+
+}
