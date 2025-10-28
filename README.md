@@ -14,6 +14,7 @@ _Organizador de rotina para estudos com IA._
 
 Planly é uma aplicação inovadora que utiliza inteligência artificial para analisar sua rotina diária e criar planos de estudo sob medida, otimizando seu tempo e potencializando seu aprendizado.  
 Com uma interface intuitiva e simples, é ideal para estudantes de qualquer área que buscam maximizar seus resultados com organização e tecnologia de ponta.
+Desenvolvido inteiramente por mim durante a Imersão IA da Alura em parceria com o Google Gemini, o projeto une tecnologia de ponta a uma interface simples e intuitiva. Ideal para estudantes de qualquer área que buscam mais organização, foco e resultados concretos nos estudos.
 
 ---
 
@@ -82,10 +83,10 @@ Com uma interface intuitiva e simples, é ideal para estudantes de qualquer áre
 
 ## 📌 Roadmap
 
-- [x] Gerar rotina personalizada com IA  
-- [x] Modo escuro e claro  
-- [ ] Layout mobile responsivo  
-- [ ] Cadastro de usuário  
+- [x] Gerar rotina personalizada com IA
+- [ ] Analisar rotina  
+- [ ] Modo escuro e claro  
+- [x] Layout mobile responsivo    
 - [ ] Histórico de rotinas geradas  
 
 ---
