@@ -47,6 +47,35 @@ def gerar_plano():
     except Exception as e:
         print("Erro interno:", e)
         return jsonify({"erro": "Erro interno no servidor."}), 500
+    
+@app.route('/analisar', methods=['POST'])
+def analisar_rotina():
+    data = request.json
+    rotina = data.get("rotina", "")
+    interesse = data.get("interesse", "")
+
+    if not rotina.strip() or not interesse.strip():
+        return jsonify({"erro": "Dados incompletos"}), 400
+
+    prompt = f"""
+    Analise a seguinte rotina de estudos:
+    {rotina}
+
+    O usuário deseja estudar: {interesse}
+
+    Avalie se a rotina é equilibrada, se há tempo suficiente para descanso,
+    e sugira melhorias baseadas em boas práticas de produtividade e aprendizado.
+    """
+
+    try:
+        resposta = modelo.generate_content(prompt)
+        return jsonify({"resultado": resposta.text})
+    except google.api_core.exceptions.GoogleAPIError as e:
+        print("Erro na API Gemini:", e)
+        return jsonify({"erro": "Erro na API Gemini. Tente novamente mais tarde."}), 500
+    except Exception as e:
+        print("Erro interno:", e)
+        return jsonify({"erro": "Erro interno no servidor."}), 500
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
