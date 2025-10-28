@@ -84,7 +84,7 @@ Desenvolvido inteiramente por mim durante a Imersão IA da Alura em parceria com
 ## 📌 Roadmap
 
 - [x] Gerar rotina personalizada com IA
-- [ ] Analisar rotina  
+- [x] Analisar rotina  
 - [ ] Modo escuro e claro  
 - [x] Layout mobile responsivo    
 - [ ] Histórico de rotinas geradas  
