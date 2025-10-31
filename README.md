@@ -85,7 +85,7 @@ Desenvolvido inteiramente por mim durante a Imersão IA da Alura em parceria com
 
 - [x] Gerar rotina personalizada com IA
 - [x] Analisar rotina  
-- [ ] Modo escuro e claro  
+- [x] Modo escuro e claro  
 - [x] Layout mobile responsivo    
 - [ ] Histórico de rotinas geradas  
 
