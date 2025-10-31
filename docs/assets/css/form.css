@@ -82,7 +82,7 @@ form.formulario {
   border: 2px solid #8c52ff;
 }
 
-  @media (max-width: 720px) {
+@media (max-width: 720px) {
   form.formulario {
     padding: 20px;
     gap: 20px;

@@ -17,14 +17,6 @@
   position: relative;
 }
 
-  @media (max-width:720px){
-      .hero .container{
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-      }
-    }
-
 /* ========================
    Conteúdo de Texto
 ======================== */
@@ -73,18 +65,6 @@
   color: white;
 }
 
-  @media (max-width:720px) {
-  .button {
-    width: 200px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    margin: 0 auto;
-  }
-}
-
 /* ========================
    Imagem fora do container
 ======================== */
@@ -104,18 +84,35 @@
   display: block;
 }
 
-  @media (max-width:720px){
+@media (max-width:720px){
+    .hero .container{
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .button {
+      width: 200px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin: 0 auto;
+    }
+
     .image-outside{
       display: none;
     }
-  }
-  @media (max-width: 422px) {
-  .text-content h1 {
-    font-size: 3px;
-    text-align: center;
-  }
-  .text-content p{
-    font-size: 20px;
-    text-align: center;
-  }
+}
+
+@media (max-width: 422px) {
+    .text-content h1 {
+      font-size: 3px;
+      text-align: center;
+    }
+    .text-content p{
+      font-size: 20px;
+      text-align: center;
+    }
 }

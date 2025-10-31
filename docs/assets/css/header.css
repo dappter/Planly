@@ -35,33 +35,11 @@
     color: #fff;
     font-weight: bold;
     font-size: 40px;
-    display: flex;
-    flex-direction: column;
 }
 
 .p2 {
     color: #8C52FF;
 }
-
-    @media (max-width:720px) {
-        .header .container {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .header h1 {
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-
-        .logo {
-            order: -1;
-        }
-    }
 
 /* ========================
    Botão de Alternar Tema
@@ -92,7 +70,7 @@
     border: 2px solid #ffffff;
     border-radius: 34px;
 
-    transition: background-color 0.4s;
+    transition: .4s;
 }
 
 .slider::before {
@@ -107,34 +85,55 @@
     background-color: #ffffff;
     border-radius: 50%;
 
-    transition: transform 0.4s;
+    transition: .4s;
 }
 
 input:checked + .slider {
-    background-color: #2196f3;
+    background-color: #ffffff;
+    border: 2px solid #a855f7;
 }
 
 input:checked + .slider::before {
     transform: translateX(73px);
+    background-color: #a855f7;
 }
 
-    @media (max-width:720px) {
-        .switch {
-            width: 130px;
-            height: 60px;
-        }
-        .slider::before {
-            width: 48px;
-            height: 48px;
-            left: 6px;
-            bottom: 4px;
-        }
-    
-        input:checked + .slider::before {
-            transform: translateX(66px);
-        }
+@media (max-width:720px) {
+    .header .container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
     }
-    @media (max-width: 422px) {
+
+    .header h1 {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .logo {
+        order: -1;
+    }
+
+    .switch {
+        width: 130px;
+        height: 60px;
+    }
+    .slider::before {
+        width: 48px;
+        height: 48px;
+        left: 6px;
+        bottom: 4px;
+    }
+
+    input:checked + .slider::before {
+        transform: translateX(66px);
+    }
+}
+
+@media (max-width: 422px) {
     .header .container {
         gap: 15px;
         padding: 1rem;
@@ -160,5 +159,4 @@ input:checked + .slider::before {
     input:checked + .slider::before {
         transform: translateX(73px);
     }
-
 }
