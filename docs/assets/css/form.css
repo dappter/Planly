@@ -82,6 +82,21 @@ form.formulario {
   border: 2px solid #8c52ff;
 }
 
+.form-feedback {
+  margin-top: 15px;
+  font-size: 14px;
+  text-align: center;
+  display: none;
+}
+
+.form-feedback--error {
+  color: #f97373;
+}
+
+.form-feedback--success {
+  color: #4ade80;
+}
+
 @media (max-width: 720px) {
   form.formulario {
     padding: 20px;
