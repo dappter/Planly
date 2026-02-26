@@ -106,6 +106,44 @@
   text-align: center;
 }
 
+.modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.modal-action-btn {
+  font-family: 'Telegraf', sans-serif;
+  font-size: 14px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid #8C52FF;
+  background: transparent;
+  color: #8C52FF;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.modal-action-btn:hover {
+  background: #8C52FF;
+  color: #ffffff;
+  box-shadow: 0 0 0 2px #8C52FF22;
+}
+
+.modal-action-primary {
+  background: #8C52FF;
+  color: #ffffff;
+  border-color: #8C52FF;
+}
+
+.modal-action-primary:hover {
+  background: #6d28d9;
+  border-color: #6d28d9;
+}
+
 .modal-content pre {
   background: #f0f0ff;
   padding: 20px;
