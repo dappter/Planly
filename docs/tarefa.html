@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tarefas - Planly</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#8c52ff">
+  <link rel="stylesheet" href="assets/css/reset.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/tarefas.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="icon" type="image/png" href="assets/icons/icon.svg" />
+</head>
+
+<body>
+  <header class="header">
+    <div class="container">
+      <div class="branding">
+        <h1>PLAN<br><span class="p2">LY</span></h1>
+      </div>
+      <nav class="header-nav">
+        <a href="index.html" class="nav-link">Início</a>
+        <a href="tarefa.html" class="nav-link active">Tarefas</a>
+        <a href="mapa.html" class="nav-link">Mapa</a>
+      </nav>
+
+      <div class="header-right">
+        <div class="user-menu-wrapper" id="userMenuWrapper">
+          <button class="user-btn" id="userBtn" title="Perfil">
+            <i class="fas fa-user-circle"></i>
+            <span id="username">Usuário</span>
+          </button>
+          <div class="user-menu" id="userMenu">
+            <div class="user-menu-header">
+              <div class="user-avatar"><i class="fas fa-user"></i></div>
+              <div>
+                <div class="user-menu-name" id="menuUsername">Usuário</div>
+                <div class="user-menu-email" id="menuUserEmail">Conta Planly</div>
+              </div>
+            </div>
+            <div class="user-menu-links">
+              <a href="tarefa.html"><i class="fas fa-tasks"></i> Minhas tarefas</a>
+              <a href="mapa.html"><i class="fas fa-map"></i> Mapa</a>
+            </div>
+            <div class="user-menu-profile">
+              <label for="menuDisplayNameInput">Nome de exibição</label>
+              <input type="text" id="menuDisplayNameInput" placeholder="Digite seu nome">
+              <div class="user-menu-actions">
+                <button class="btn-primary" id="menuSaveNameBtn">Salvar</button>
+                <button class="btn-secondary" id="menuResetNameBtn">Resetar</button>
+              </div>
+            </div>
+            <button class="user-menu-logout" id="logoutBtnDesktop"><i class="fas fa-sign-out-alt"></i> Sair</button>
+          </div>
+        </div>
+        <button class="install-btn" id="installBtn" title="Instalar app">
+          <i class="fas fa-download"></i>
+          <span>Instalar</span>
+        </button>
+        <label class="switch" aria-label="Alterar tema escuro/claro" title="Alterar tema">
+          <input type="checkbox" id="themeToggle">
+          <span class="slider"></span>
+        </label>
+        <a href="index.html" class="logo-link" aria-label="Ir para o início">
+          <img src="assets/icons/logo.svg" alt="logo do planly" class="logo">
+        </a>
+
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-header">
+      <h2>Menu</h2>
+      <button class="close-menu" id="closeMenu">&times;</button>
+    </div>
+    <nav class="mobile-nav">
+      <a href="index.html" class="mobile-nav-link">
+        <span class="mobile-nav-icon"><i class="fas fa-home"></i></span>
+        <span>Início</span>
+      </a>
+      <a href="tarefa.html" class="mobile-nav-link active">
+        <span class="mobile-nav-icon"><i class="fas fa-tasks"></i></span>
+        <span>Tarefas</span>
+      </a>
+      <a href="mapa.html" class="mobile-nav-link">
+        <span class="mobile-nav-icon"><i class="fas fa-map"></i></span>
+        <span>Mapa</span>
+      </a>
+      <div class="mobile-theme-toggle">
+        <span class="mobile-nav-icon"><i class="fas fa-adjust"></i></span>
+        <span>Tema</span>
+        <label class="switch-mobile">
+          <input type="checkbox" id="themeToggleMobile">
+          <span class="slider-mobile"></span>
+        </label>
+      </div>
+      <a href="#" class="mobile-nav-link" id="logoutBtnMobile">
+        <span class="mobile-nav-icon"><i class="fas fa-sign-out-alt"></i></span>
+        <span>Sair</span>
+      </a>
+    </nav>
+  </div>
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+  <!-- Barra de Gamificação -->
+  <section class="gamification-bar">
+    <div class="stats-wrapper">
+      <div class="stat-box">
+        <span class="stat-icon"><i class="fas fa-bolt"></i></span>
+        <div>
+          <div class="stat-label">XP Total</div>
+          <div class="stat-value" id="totalXP">0</div>
+        </div>
+      </div>
+      <div class="stat-box">
+        <span class="stat-icon"><i class="fas fa-trophy"></i></span>
+        <div>
+          <div class="stat-label">Nível</div>
+          <div class="stat-value" id="userLevel">1</div>
+        </div>
+      </div>
+      <div class="stat-box">
+        <span class="stat-icon flame-animation"><i class="fas fa-fire"></i></span>
+        <div>
+          <div class="stat-label">Sequência</div>
+          <div class="stat-value"><span id="streak">0</span> dias</div>
+        </div>
+      </div>
+      <div class="stat-box">
+        <span class="stat-icon"><i class="fas fa-sync-alt"></i></span>
+        <div>
+          <div class="stat-label">Rotina Diária</div>
+          <div class="stat-value"><span id="routineCompleted">0</span>/<span id="routineTotal">0</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="xp-progress">
+      <div class="xp-info">
+        <span>Progresso para Nível <span id="nextLevel">2</span></span>
+        <span><span id="currentXP">0</span>/<span id="xpForNext">100</span> XP</span>
+      </div>
+      <div class="xp-bar">
+        <div class="xp-fill" id="xpProgressBar"></div>
+      </div>
+    </div>
+  </section>
+
+  <main class="main-content">
+    <!-- Painel de Tarefas -->
+    <section class="panel tasks-panel">
+      <div class="panel-header">
+        <h2>📋 Minhas Tarefas</h2>
+        <button class="btn-primary" id="addTaskBtn">+ Nova Tarefa</button>
+      </div>
+
+      <div class="task-form-container" id="taskForm" style="display: none;">
+        <input type="text" id="taskInput" placeholder="Digite sua tarefa..." maxlength="100" class="input-field">
+        <div class="routine-checkbox">
+          <label>
+            <input type="checkbox" id="taskRoutine">
+            <span>📅 Tarefa de Rotina Diária (reseta todo dia)</span>
+          </label>
+        </div>
+        <div class="form-actions">
+          <select id="taskPriority" class="input-field">
+            <option value="baixa">🟢 Baixa</option>
+            <option value="media" selected>🟡 Média</option>
+            <option value="alta">🔴 Alta</option>
+          </select>
+          <input type="datetime-local" id="taskDeadline" class="input-field">
+          <button class="btn-success" id="saveTaskBtn">Salvar</button>
+          <button class="btn-secondary" id="cancelTaskBtn">Cancelar</button>
+        </div>
+      </div>
+
+      <div id="tasksList"></div>
+
+      <details class="completed-tasks">
+        <summary>✅ Tarefas Concluídas (<span id="completedCount">0</span>)</summary>
+        <div id="completedTasksList"></div>
+      </details>
+    </section>
+
+    <!-- Painel de Hábitos -->
+    <section class="panel habits-panel">
+      <div class="panel-header">
+        <h2>🎯 Hábitos de Estudo</h2>
+        <button class="btn-primary" id="addHabitBtn">+ Novo Hábito</button>
+      </div>
+
+      <div class="habit-form-container" id="habitForm" style="display: none;">
+        <input type="text" id="habitInput" placeholder="Nome do hábito..." maxlength="50" class="input-field">
+        <div class="habit-details">
+          <div>
+            <label>Meta Diária (min)</label>
+            <input type="number" id="habitGoal" min="5" max="480" value="30" class="input-field">
+          </div>
+          <div>
+            <label>Horário Ideal</label>
+            <input type="time" id="habitTime" value="09:00" class="input-field">
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn-success" id="saveHabitBtn">Salvar</button>
+          <button class="btn-secondary" id="cancelHabitBtn">Cancelar</button>
+        </div>
+      </div>
+
+      <div id="habitsList"></div>
+    </section>
+
+    <!-- Conquistas -->
+    <section class="panel achievements-panel">
+      <div class="panel-header">
+        <h2>🏅 Conquistas</h2>
+      </div>
+      <div class="achievements-scroll" id="achievementsList"></div>
+    </section>
+
+    <!-- Acompanhamento -->
+    <section class="panel progress-panel">
+      <div class="panel-header">
+        <h2>📈 Acompanhamento</h2>
+      </div>
+      <div class="progress-grid">
+        <div class="progress-card">
+          <div class="progress-title">Tarefas concluídas</div>
+          <div class="progress-value"><span id="progressTasksPercent">0</span>%</div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressTasksBar"></div>
+          </div>
+          <div class="progress-meta"><span id="progressTasksDone">0</span>/<span id="progressTasksTotal">0</span> tarefas</div>
+        </div>
+        <div class="progress-card">
+          <div class="progress-title">Hábitos de hoje</div>
+          <div class="progress-value"><span id="progressHabitsPercent">0</span>%</div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressHabitsBar"></div>
+          </div>
+          <div class="progress-meta"><span id="progressHabitsDone">0</span>/<span id="progressHabitsTotal">0</span> hábitos</div>
+        </div>
+        <div class="progress-card">
+          <div class="progress-title">Rotina diária</div>
+          <div class="progress-value"><span id="progressRoutinePercent">0</span>%</div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressRoutineBar"></div>
+          </div>
+          <div class="progress-meta"><span id="progressRoutineDone">0</span>/<span id="progressRoutineTotal">0</span> rotinas</div>
+        </div>
+        <div class="progress-card">
+          <div class="progress-title">Semana em foco</div>
+          <div class="progress-value"><span id="progressWeekPercent">0</span>%</div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressWeekBar"></div>
+          </div>
+          <div class="progress-meta"><span id="progressWeekDone">0</span>/<span id="progressWeekGoal">20</span> tarefas</div>
+        </div>
+      </div>
+      <div class="progress-summary">
+        <div class="summary-item"><i class="fas fa-flag"></i> <span id="summaryHighPriority">0</span> altas pendentes</div>
+        <div class="summary-item"><i class="fas fa-clock"></i> <span id="summaryOverdue">0</span> vencidas</div>
+        <div class="summary-item"><i class="fas fa-trophy"></i> <span id="summaryUnlocked">0</span> conquistas desbloqueadas</div>
+      </div>
+    </section>
+
+    <!-- Ranking e Patentes -->
+    <section class="panel ranking-panel">
+      <div class="panel-header">
+        <h2>🏆 Ranking de Gamificação</h2>
+      </div>
+      <div class="ranking-layout">
+        <div class="ranking-list" id="rankingList"></div>
+        <div class="rank-card">
+          <div class="rank-title">Sua patente</div>
+          <div class="rank-badge" id="rankTierName">Bronze</div>
+          <div class="rank-desc" id="rankTierDesc">Continue completando tarefas para subir de patente.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="apoie">
+        <h4>Apoie meu projeto</h4>
+        <ul class="footer-list">
+          <li>
+            <img src="assets/icons/github.svg" alt="GitHub">
+            <a href="https://github.com/dappter/Planly" target="_blank">github.com/dappter/Planly</a>
+          </li>
+          <li>
+            <img src="assets/icons/linkedin.svg" alt="LinkedIn">
+            <a href="https://www.linkedin.com/in/josé-guilherme-rodrigues-lóssio-417237323/" target="_blank">José Guilherme R. Lóssio</a>
+          </li>
+        </ul>
+      </div>
+      <div class="contatos">
+        <h4>Entre em contato</h4>
+        <ul class="footer-list">
+          <li>
+            <img src="assets/icons/gmail.svg" alt="Gmail">
+            <a href="mailto:guilhermelossio3@gmail.com">guilhermelossio3@gmail.com</a>
+          </li>
+          <li>
+            <img src="assets/icons/phone.svg" alt="Telefone">
+            <a href="tel:+558899758371">+55 (88) 9975-8371</a>
+          </li>
+          <li>
+            <img src="assets/icons/discord.svg" alt="Discord">
+            <a href="https://discord.com/users/514121475402235907" target="_blank">@ze144p</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/pwa.js"></script>
+  <script type="module" src="assets/js/auth.js"></script>
+  <script type="module" src="assets/js/ranking.js"></script>
+  <script src="assets/js/menu.js"></script>
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/tarefas.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,15 @@
+{
+  "name": "Planly",
+  "short_name": "Planly",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#1e1e1e",
+  "theme_color": "#8c52ff",
+  "icons": [
+    {
+      "src": "assets/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

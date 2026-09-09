@@ -97,7 +97,28 @@ form.formulario {
   color: #4ade80;
 }
 
+@media (max-width: 968px) {
+  form.formulario {
+    padding: 25px;
+    max-width: 900px;
+  }
+
+  .botoes {
+    gap: 60px;
+  }
+
+  .formulario .button {
+    font-size: 28px;
+    padding: 12px 35px;
+  }
+
+}
+
 @media (max-width: 720px) {
+  main {
+    padding: 40px 0;
+  }
+
   form.formulario {
     padding: 20px;
     gap: 20px;
@@ -110,8 +131,18 @@ form.formulario {
     max-width: 100%;
   }
 
+  .formulario h1 {
+    font-size: 22px;
+  }
+
+  .formulario input[type="text"],
   .formulario textarea {
-    height: 180px;
+    font-size: 15px;
+    padding: 12px;
+  }
+
+  .formulario textarea {
+    height: 150px;
   }
 
   .botoes {
@@ -125,5 +156,37 @@ form.formulario {
     width: 100%;
     max-width: 280px;
     font-size: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  main {
+    padding: 30px 0;
+  }
+
+  form.formulario {
+    padding: 18px;
+    width: 95%;
+    gap: 18px;
+  }
+
+  .formulario h1 {
+    font-size: 20px;
+  }
+
+  .formulario input[type="text"],
+  .formulario textarea {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .formulario textarea {
+    height: 120px;
+  }
+
+  .formulario .button {
+    max-width: 240px;
+    font-size: 20px;
+    padding: 12px 30px;
   }
 }

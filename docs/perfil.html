@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil - Planly</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#8c52ff">
+  <link rel="stylesheet" href="assets/css/reset.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/pages.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="icon" type="image/png" href="assets/icons/icon.svg" />
+</head>
+
+<body>
+  <header class="header">
+    <div class="container">
+      <div class="branding">
+        <h1>PLAN<br><span class="p2">LY</span></h1>
+      </div>
+      <nav class="header-nav">
+        <a href="index.html" class="nav-link">Início</a>
+        <a href="tarefa.html" class="nav-link">Tarefas</a>
+        <a href="progresso.html" class="nav-link">Progresso</a>
+        <a href="perfil.html" class="nav-link active">Perfil</a>
+      </nav>
+
+      <div class="header-right">
+        <div class="user-menu-wrapper" id="userMenuWrapper">
+          <button class="user-btn" id="userBtn" title="Perfil">
+            <i class="fas fa-user-circle"></i>
+            <span id="username">Usuário</span>
+          </button>
+          <div class="user-menu" id="userMenu">
+            <div class="user-menu-header">
+              <div class="user-avatar"><i class="fas fa-user"></i></div>
+              <div>
+                <div class="user-menu-name" id="menuUsername">Usuário</div>
+                <div class="user-menu-email" id="menuUserEmail">Conta Planly</div>
+              </div>
+            </div>
+            <div class="user-menu-links">
+              <a href="perfil.html"><i class="fas fa-user"></i> Meu perfil</a>
+              <a href="progresso.html"><i class="fas fa-chart-line"></i> Progresso</a>
+              <a href="tarefa.html"><i class="fas fa-tasks"></i> Minhas tarefas</a>
+            </div>
+            <button class="user-menu-logout" id="logoutBtnDesktop"><i class="fas fa-sign-out-alt"></i> Sair</button>
+          </div>
+        </div>
+        <button class="install-btn" id="installBtn" title="Instalar app">
+          <i class="fas fa-download"></i>
+          <span>Instalar</span>
+        </button>
+        <label class="switch" aria-label="Alterar tema escuro/claro" title="Alterar tema">
+          <input type="checkbox" id="themeToggle">
+          <span class="slider"></span>
+        </label>
+        <a href="index.html" class="logo-link" aria-label="Ir para o início">
+          <img src="assets/icons/logo.svg" alt="logo do planly" class="logo">
+        </a>
+
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-header">
+      <h2>Menu</h2>
+      <button class="close-menu" id="closeMenu">&times;</button>
+    </div>
+    <nav class="mobile-nav">
+      <a href="index.html" class="mobile-nav-link">
+        <span class="mobile-nav-icon"><i class="fas fa-home"></i></span>
+        <span>Início</span>
+      </a>
+      <a href="tarefa.html" class="mobile-nav-link">
+        <span class="mobile-nav-icon"><i class="fas fa-tasks"></i></span>
+        <span>Tarefas</span>
+      </a>
+      <a href="progresso.html" class="mobile-nav-link">
+        <span class="mobile-nav-icon"><i class="fas fa-chart-line"></i></span>
+        <span>Progresso</span>
+      </a>
+      <a href="perfil.html" class="mobile-nav-link active">
+        <span class="mobile-nav-icon"><i class="fas fa-user"></i></span>
+        <span>Perfil</span>
+      </a>
+      <div class="mobile-theme-toggle">
+        <span class="mobile-nav-icon"><i class="fas fa-adjust"></i></span>
+        <span>Tema</span>
+        <label class="switch-mobile">
+          <input type="checkbox" id="themeToggleMobile">
+          <span class="slider-mobile"></span>
+        </label>
+      </div>
+      <a href="#" class="mobile-nav-link" id="logoutBtnMobile">
+        <span class="mobile-nav-icon"><i class="fas fa-sign-out-alt"></i></span>
+        <span>Sair</span>
+      </a>
+    </nav>
+  </div>
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+  <section class="page-hero">
+    <h1>Seu perfil Planly</h1>
+    <p>Personalize seu nome e organize suas preferências.</p>
+  </section>
+
+  <main class="page-container">
+    <section class="page-grid">
+      <div class="page-card">
+        <h3>Resumo rápido</h3>
+        <div class="metric-value" id="profileStreak">0 dias</div>
+        <div class="metric-label">Sequência atual</div>
+      </div>
+      <div class="page-card">
+        <h3>Nível atual</h3>
+        <div class="metric-value" id="profileLevel">1</div>
+        <div class="metric-label"><span id="profileXP">0</span> XP acumulados</div>
+      </div>
+      <div class="page-card">
+        <h3>Conquistas</h3>
+        <div class="metric-value" id="profileAchievements">0</div>
+        <div class="metric-label">Desbloqueadas</div>
+      </div>
+    </section>
+
+    <section class="page-card">
+      <h3>Nome de exibição</h3>
+      <div class="profile-form">
+        <div>
+          <label for="profileDisplayName">Como você quer aparecer no app?</label>
+          <input type="text" id="profileDisplayName" placeholder="Digite seu nome">
+        </div>
+        <div class="profile-actions">
+          <button class="btn-primary" id="saveProfileBtn">Salvar</button>
+          <button class="btn-secondary" id="resetProfileBtn">Restaurar padrão</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="apoie">
+        <h4>Apoie meu projeto</h4>
+        <ul class="footer-list">
+          <li>
+            <img src="assets/icons/github.svg" alt="GitHub">
+            <a href="https://github.com/dappter/Planly" target="_blank">github.com/dappter/Planly</a>
+          </li>
+          <li>
+            <img src="assets/icons/linkedin.svg" alt="LinkedIn">
+            <a href="https://www.linkedin.com/in/josé-guilherme-rodrigues-lóssio-417237323/" target="_blank">José Guilherme R. Lóssio</a>
+          </li>
+        </ul>
+      </div>
+      <div class="contatos">
+        <h4>Entre em contato</h4>
+        <ul class="footer-list">
+          <li>
+            <img src="assets/icons/gmail.svg" alt="Gmail">
+            <a href="mailto:guilhermelossio3@gmail.com">guilhermelossio3@gmail.com</a>
+          </li>
+          <li>
+            <img src="assets/icons/phone.svg" alt="Telefone">
+            <a href="tel:+558899758371">+55 (88) 9975-8371</a>
+          </li>
+          <li>
+            <img src="assets/icons/discord.svg" alt="Discord">
+            <a href="https://discord.com/users/514121475402235907" target="_blank">@ze144p</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/pwa.js"></script>
+  <script type="module" src="assets/js/auth.js"></script>
+  <script src="assets/js/menu.js"></script>
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/perfil.js"></script>
+</body>
+
+</html>

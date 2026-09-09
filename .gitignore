@@ -1,6 +1,25 @@
+# Variáveis de ambiente (chaves API)
 .env
+.env.*
+
+# Python
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
-.env.*
+.venv/
+venv/
+
+# IDE / Editor
+.vscode/
+.idea/
+
+# Banco de dados local
+instance/
+*.db
+*.sqlite3
+
+# Sistema operacional
+Thumbs.db
+Desktop.ini
+.DS_Store

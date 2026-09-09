@@ -1,27 +1,117 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Planly</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#8c52ff">
   <link rel="stylesheet" href="assets/css/reset.css">
   <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="icon" type="image/png" href="assets/icons/icon.svg"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="icon" type="image/png" href="assets/icons/icon.svg" />
 </head>
+
 <body>
   <header class="header">
-    <div class="container"> 
-        <h1>PLAN<span class="p2">LY</span></h1>
+    <div class="container">
+      <div class="branding">
+        <h1>PLAN<br><span class="p2">LY</span></h1>
+      </div>
 
-      <label class="switch" aria-label="Alterar tema escuro/claro" title="Alterar tema">
-        <input type="checkbox" id="themeToggle">
-        <span class="slider"></span>
-      </label>
-      <img src="assets/icons/logo.svg" alt="logo do planly" class="logo">
+      <nav class="header-nav">
+        <a href="index.html" class="nav-link active">Início</a>
+        <a href="tarefa.html" class="nav-link">Tarefas</a>
+        <a href="mapa.html" class="nav-link">Mapa</a>
+      </nav>
+
+      <div class="header-right">
+        <div class="user-menu-wrapper" id="userMenuWrapper">
+          <button class="user-btn" id="userBtn" title="Perfil">
+            <i class="fas fa-user-circle"></i>
+            <span id="username">Usuário</span>
+          </button>
+          <div class="user-menu" id="userMenu">
+            <div class="user-menu-header">
+              <div class="user-avatar"><i class="fas fa-user"></i></div>
+              <div>
+                <div class="user-menu-name" id="menuUsername">Usuário</div>
+                <div class="user-menu-email" id="menuUserEmail">Conta Planly</div>
+              </div>
+            </div>
+            <div class="user-menu-links">
+              <a href="tarefa.html"><i class="fas fa-tasks"></i> Minhas tarefas</a>
+              <a href="mapa.html"><i class="fas fa-map"></i> Mapa</a>
+            </div>
+            <div class="user-menu-profile">
+              <label for="menuDisplayNameInput">Nome de exibição</label>
+              <input type="text" id="menuDisplayNameInput" placeholder="Digite seu nome">
+              <div class="user-menu-actions">
+                <button class="btn-primary" id="menuSaveNameBtn">Salvar</button>
+                <button class="btn-secondary" id="menuResetNameBtn">Resetar</button>
+              </div>
+            </div>
+            <button class="user-menu-logout" id="logoutBtnDesktop"><i class="fas fa-sign-out-alt"></i> Sair</button>
+          </div>
+        </div>
+        <button class="install-btn" id="installBtn" title="Instalar app">
+          <i class="fas fa-download"></i>
+          <span>Instalar</span>
+        </button>
+        <label class="switch" aria-label="Alterar tema escuro/claro" title="Alterar tema">
+          <input type="checkbox" id="themeToggle">
+          <span class="slider"></span>
+        </label>
+        <a href="index.html" class="logo-link" aria-label="Ir para o início">
+          <img src="assets/icons/logo.svg" alt="logo do planly" class="logo">
+        </a>
+
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
+      </div>
     </div>
   </header>
 
-  <section class="hero">
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-header">
+      <h2>Menu</h2>
+      <button class="close-menu" id="closeMenu">&times;</button>
+    </div>
+    <nav class="mobile-nav">
+      <a href="index.html" class="mobile-nav-link active">
+        <span class="mobile-nav-icon"><i class="fas fa-home"></i></span>
+        <span>Início</span>
+      </a>
+      <a href="tarefa.html" class="mobile-nav-link">
+        <span class="mobile-nav-icon"><i class="fas fa-tasks"></i></span>
+        <span>Tarefas</span>
+      </a>
+      <a href="mapa.html" class="mobile-nav-link">
+        <span class="mobile-nav-icon"><i class="fas fa-map"></i></span>
+        <span>Mapa</span>
+      </a>
+      <div class="mobile-theme-toggle">
+        <span class="mobile-nav-icon"><i class="fas fa-adjust"></i></span>
+        <span>Tema</span>
+        <label class="switch-mobile">
+          <input type="checkbox" id="themeToggleMobile">
+          <span class="slider-mobile"></span>
+        </label>
+      </div>
+      <a href="#" class="mobile-nav-link" id="logoutBtnMobile">
+        <span class="mobile-nav-icon"><i class="fas fa-sign-out-alt"></i></span>
+        <span>Sair</span>
+      </a>
+    </nav>
+  </div>
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+  <section class="hero" id="inicio">
     <div class="container">
       <div class="text-content">
         <h1>Sua rotina,<br>do seu jeito.</h1>
@@ -32,6 +122,97 @@
 
     <div class="image-outside">
       <img src="assets/img/background-notebook.jpg" alt="Notebook ao fundo">
+    </div>
+  </section>
+
+  <section class="about" id="sobre">
+    <div class="container">
+      <div class="about-header">
+        <span class="about-pill">✨ Planly em poucos minutos</span>
+        <h2>Um mapa completo da sua rotina com IA</h2>
+        <p>Organize tarefas, crie hábitos e visualize seu progresso em um único lugar. Tudo rápido, bonito e prático.</p>
+      </div>
+
+      <div class="about-grid">
+        <article class="about-card">
+          <div class="about-icon"><i class="fas fa-brain"></i></div>
+          <h3>IA que entende você</h3>
+          <p>Descreva sua rotina e receba um plano de estudos objetivo, direto e personalizado.</p>
+        </article>
+        <article class="about-card">
+          <div class="about-icon"><i class="fas fa-list-check"></i></div>
+          <h3>Tarefas inteligentes</h3>
+          <p>Defina prioridades, prazos e rotinas diárias para manter o foco sem perder o ritmo.</p>
+        </article>
+        <article class="about-card">
+          <div class="about-icon"><i class="fas fa-seedling"></i></div>
+          <h3>Hábitos com recompensa</h3>
+          <p>Crie hábitos e acompanhe metas diárias com XP, níveis e conquistas.</p>
+        </article>
+        <article class="about-card">
+          <div class="about-icon"><i class="fas fa-chart-line"></i></div>
+          <h3>Progresso visual</h3>
+          <p>Entenda sua evolução com gráficos, percentuais e feedback instantâneo.</p>
+        </article>
+        <article class="about-card">
+          <div class="about-icon"><i class="fas fa-map"></i></div>
+          <h3>Mapa de estudos</h3>
+          <p>Arraste tarefas para horários disponíveis e monte seu dia com poucos cliques.</p>
+        </article>
+        <article class="about-card">
+          <div class="about-icon"><i class="fas fa-mobile-screen"></i></div>
+          <h3>Responsivo e PWA</h3>
+          <p>Use no celular ou desktop com a mesma experiência fluida e elegante.</p>
+        </article>
+      </div>
+
+      <div class="about-steps">
+        <div class="step-card">
+          <span class="step-number">01</span>
+          <h4>Descreva sua rotina</h4>
+          <p>Informe horários, prioridades e objetivos para a IA criar um plano realista.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-number">02</span>
+          <h4>Gere seu plano</h4>
+          <p>Receba um cronograma conciso com atividades e dicas práticas.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-number">03</span>
+          <h4>Execute e acompanhe</h4>
+          <p>Transforme o plano em tarefas, hábitos e veja seu progresso diariamente.</p>
+        </div>
+      </div>
+
+      <div class="site-map">
+        <h3>Mapa do site</h3>
+        <div class="site-map-grid">
+          <a href="#inicio" class="site-map-card">
+            <i class="fas fa-home"></i>
+            <span>Início</span>
+          </a>
+          <a href="#formulario" class="site-map-card">
+            <i class="fas fa-pen-nib"></i>
+            <span>Formulário</span>
+          </a>
+          <a href="#exemplo" class="site-map-card">
+            <i class="fas fa-bolt"></i>
+            <span>Exemplos</span>
+          </a>
+          <a href="tarefa.html" class="site-map-card">
+            <i class="fas fa-tasks"></i>
+            <span>Tarefas</span>
+          </a>
+          <a href="mapa.html" class="site-map-card">
+            <i class="fas fa-map"></i>
+            <span>Mapa</span>
+          </a>
+          <a href="progresso.html" class="site-map-card">
+            <i class="fas fa-chart-line"></i>
+            <span>Progresso</span>
+          </a>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -62,7 +243,7 @@
     </form>
   </main>
 
-  <section class="exemplo hero">
+  <section class="exemplo hero" id="exemplo">
     <div class="container">
       <div class="text-content">
         <h1>Exemplo<br>simples.</h1>
@@ -70,6 +251,7 @@
           <p>Possuo o final de semana todo livre.</p>
           <button class="button" id="gerarExemplo">GERAR</button>
         </div>
+        <div class="exemplo-lista" id="exemploLista"></div>
       </div>
     </div>
     <div class="image-outside">
@@ -113,12 +295,16 @@
   </footer>
 
 
-<div id="loading" style="display: none;">
-  <div class="loader"></div>
-  <p style="color: #1e1e1e;">Gerando plano de estudos...</p>
-</div>
-<script src="assets/js/button.js"></script>
-<script src="assets/js/actions.js"></script>
-<script src="assets/js/theme.js"></script>
+  <div id="loading" style="display: none;">
+    <div class="loader"></div>
+    <p style="color: #1e1e1e;">Gerando plano de estudos...</p>
+  </div>
+  <script src="assets/js/pwa.js"></script>
+  <script type="module" src="assets/js/auth.js"></script>
+  <script src="assets/js/menu.js"></script>
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/button.js"></script>
+  <script src="assets/js/actions.js"></script>
 </body>
+
 </html>
