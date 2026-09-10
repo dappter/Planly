@@ -152,8 +152,9 @@ def analisar_rotina():
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 8080))
+    host = os.environ.get("HOST", "0.0.0.0")
     print(f"\n🚀 Servidor Planly iniciado!")
     print(f"📍 Acesse: http://localhost:{port}")
     print(f"🔐 Autenticação: Firebase (frontend)")
     print(f"🤖 API Gemini: {'✅ Ativa' if client else '❌ Desabilitada'}\n")
-    app.run(host="127.0.0.1", port=port, debug=False)
+    app.run(host=host, port=port, debug=False)
