@@ -6,7 +6,11 @@ from google import genai
 
 # Configuração
 app = Flask(__name__, static_folder='docs')
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app, resources={r"/*": {"origins": [
+    "https://dappter.github.io",
+    "http://localhost:8080",
+    "http://127.0.0.1:8080",
+]}})
 
 load_dotenv()
 api_key = os.getenv("API_KEY")

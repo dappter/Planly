@@ -10,17 +10,7 @@ import {
   onAuthStateChanged,
   signOut,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-// Configuração do Firebase (mesma do firebase-auth.html)
-const firebaseConfig = {
-  apiKey: "__FIREBASE_API_KEY__",
-  authDomain: "meu-app-94c74.firebaseapp.com",
-  projectId: "meu-app-94c74",
-  storageBucket: "meu-app-94c74.firebasestorage.app",
-  messagingSenderId: "711758646512",
-  appId: "1:711758646512:web:d9dae94a6d47c8f89a4635",
-  measurementId: "G-4BDC95W4VJ",
-};
+import { firebaseConfig } from "./firebase-config.js";
 
 // Inicializar Firebase
 const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
@@ -82,7 +72,7 @@ function setupMenuProfileControls() {
 async function logout() {
   try {
     await signOut(auth);
-    window.location.href = "/login.html";
+    window.location.href = "login.html";
   } catch (error) {
     console.error("Erro ao fazer logout:", error);
     alert("Erro ao sair. Tente novamente.");
@@ -156,6 +146,6 @@ onAuthStateChanged(auth, (user) => {
     }
   } else {
     localStorage.removeItem("planly_current_user");
-    window.location.href = "/login.html";
+    window.location.href = "login.html";
   }
 });

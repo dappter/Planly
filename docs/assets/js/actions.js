@@ -50,7 +50,7 @@ function saveMapSlotsFromRoutine() {
     `planly_map_slots_${userId}`,
     JSON.stringify(normalized),
   );
-  window.location.href = "/mapa.html";
+  window.location.href = "mapa.html";
 }
 
 function mostrarLoader(exibir, tipoAcao) {
