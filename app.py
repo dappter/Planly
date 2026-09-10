@@ -10,6 +10,8 @@ CORS(app, resources={r"/*": {"origins": [
     "https://dappter.github.io",
     "http://localhost:8080",
     "http://127.0.0.1:8080",
+    "https://planly-api.onrender.com",
+    r"https://.*\.onrender\.com",
 ]}})
 
 load_dotenv()
