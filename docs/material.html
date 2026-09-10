@@ -4,12 +4,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mapa - Planly</title>
+  <title>Material de Estudo - Planly</title>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#8c52ff">
   <link rel="stylesheet" href="assets/css/reset.css">
   <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="stylesheet" href="assets/css/mapa.css">
+  <link rel="stylesheet" href="assets/css/tarefas.css">
+  <link rel="stylesheet" href="assets/css/result.css">
+  <link rel="stylesheet" href="assets/css/material.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="icon" type="image/png" href="assets/icons/icon.svg" />
 </head>
@@ -23,8 +25,8 @@
       <nav class="header-nav">
         <a href="index.html" class="nav-link">Início</a>
         <a href="tarefa.html" class="nav-link">Tarefas</a>
-        <a href="mapa.html" class="nav-link active">Mapa</a>
-        <a href="material.html" class="nav-link">Material</a>
+        <a href="mapa.html" class="nav-link">Mapa</a>
+        <a href="material.html" class="nav-link active">Material</a>
       </nav>
 
       <div class="header-right">
@@ -92,11 +94,11 @@
         <span class="mobile-nav-icon"><i class="fas fa-tasks"></i></span>
         <span>Tarefas</span>
       </a>
-      <a href="mapa.html" class="mobile-nav-link active">
+      <a href="mapa.html" class="mobile-nav-link">
         <span class="mobile-nav-icon"><i class="fas fa-map"></i></span>
         <span>Mapa</span>
       </a>
-      <a href="material.html" class="mobile-nav-link">
+      <a href="material.html" class="mobile-nav-link active">
         <span class="mobile-nav-icon"><i class="fas fa-file-pdf"></i></span>
         <span>Material</span>
       </a>
@@ -116,27 +118,59 @@
   </div>
   <div class="menu-overlay" id="menuOverlay"></div>
 
-  <section class="map-hero">
-    <h1>Mapa de estudos</h1>
-    <p>Arraste tarefas para os horários disponíveis e organize o seu dia.</p>
-  </section>
-
-  <main class="map-container">
-    <section class="map-column">
-      <div class="map-column-header">
-        <h2>⏰ Horários disponíveis</h2>
-        <button class="btn-secondary" id="addSlotBtn"><i class="fas fa-plus"></i> Adicionar horário</button>
+  <main class="main-content material-page">
+    <!-- Upload -->
+    <section class="panel material-upload-panel">
+      <div class="panel-header">
+        <h2><i class="fas fa-file-pdf"></i> Material de Aula</h2>
       </div>
-      <span class="map-hint" id="mapTouchHint">Toque em uma tarefa e depois em um horário para posicionar.</span>
-      <div class="slot-list" id="slotList"></div>
+      <p class="material-intro">
+        Envie um PDF (slides, apostila, resumo de aula) e a IA organiza um plano de
+        estudo, monta um quiz e gera flashcards a partir do conteúdo. O arquivo não
+        fica salvo — apenas o resultado gerado.
+      </p>
+
+      <form id="materialForm" class="material-form">
+        <label for="materialFile" class="material-dropzone" id="materialDropzone">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <span id="materialFileName">Clique ou arraste um PDF (até 15MB)</span>
+          <input type="file" id="materialFile" accept="application/pdf,.pdf" hidden>
+        </label>
+        <input type="text" id="materialContexto" class="input-field"
+          placeholder="Contexto opcional (ex: prova de Biologia - capítulo 4)" maxlength="120">
+        <button type="submit" class="btn-primary" id="materialSubmitBtn">
+          <i class="fas fa-magic"></i> Analisar arquivo
+        </button>
+      </form>
+
+      <div id="materialFeedback" class="form-feedback" style="display:none;"></div>
+
+      <div id="materialLoading" class="material-loading" style="display:none;">
+        <div class="loader"></div>
+        <p>Analisando o material com IA...</p>
+      </div>
     </section>
 
-    <section class="map-column">
-      <div class="map-column-header">
-        <h2>🧩 Tarefas para mapear</h2>
-        <span class="map-hint">Arraste para os horários</span>
+    <!-- Resultado -->
+    <section class="panel material-result-panel" id="materialResultPanel" style="display:none;">
+      <div class="material-tabs" id="materialTabs">
+        <button type="button" class="material-tab active" data-tab="resumo">📅 Resumo & Plano</button>
+        <button type="button" class="material-tab" data-tab="quiz">❓ Quiz</button>
+        <button type="button" class="material-tab" data-tab="flashcards">🗂️ Flashcards</button>
       </div>
-      <div class="task-pool" id="taskPool"></div>
+
+      <div class="material-tab-panel active" id="tabResumo">
+        <div class="resultado-formatado" id="materialResumoConteudo"></div>
+        <div id="materialSugestoesContainer"></div>
+      </div>
+
+      <div class="material-tab-panel" id="tabQuiz">
+        <div id="materialQuizContainer"></div>
+      </div>
+
+      <div class="material-tab-panel" id="tabFlashcards">
+        <div id="materialFlashcardsContainer"></div>
+      </div>
     </section>
   </main>
 
@@ -179,7 +213,8 @@
   <script type="module" src="assets/js/auth.js"></script>
   <script src="assets/js/menu.js"></script>
   <script src="assets/js/theme.js"></script>
-  <script src="assets/js/mapa.js"></script>
+  <script src="assets/js/plan-suggestions.js"></script>
+  <script src="assets/js/material.js"></script>
 </body>
 
 </html>

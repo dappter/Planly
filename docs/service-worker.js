@@ -1,9 +1,10 @@
-const CACHE_NAME = "planly-v5";
+const CACHE_NAME = "planly-v6";
 const ASSETS = [
   "./",
   "./index.html",
   "./tarefa.html",
   "./mapa.html",
+  "./material.html",
   "./login.html",
   "./register.html",
   "./manifest.json",
@@ -17,6 +18,7 @@ const ASSETS = [
   "./assets/css/exemple.css",
   "./assets/css/result.css",
   "./assets/css/mapa.css",
+  "./assets/css/material.css",
   "./assets/js/pwa.js",
   "./assets/js/auth.js",
   "./assets/js/menu.js",
@@ -26,6 +28,8 @@ const ASSETS = [
   "./assets/js/tarefas.js",
   "./assets/js/ranking.js",
   "./assets/js/mapa.js",
+  "./assets/js/material.js",
+  "./assets/js/plan-suggestions.js",
   "./assets/icons/icon.svg",
   "./assets/icons/logo.svg",
   "./assets/img/background-notebook.jpg",

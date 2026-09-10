@@ -53,6 +53,7 @@ function saveMapSlotsFromRoutine() {
   window.location.href = "mapa.html";
 }
 
+
 function mostrarLoader(exibir, tipoAcao) {
   if (!loader) return;
 
@@ -121,7 +122,7 @@ async function enviarDados(url, tipoAcao) {
 
     const json = await resposta.json();
     if (json.resultado) {
-      exibirModal(formatarMarkdown(json.resultado));
+      exibirModal(formatarMarkdown(json.resultado), json.tarefas_sugeridas || []);
       const mensagemSucesso =
         tipoAcao === 'analisar'
           ? 'Análise da rotina gerada com sucesso.'
@@ -185,7 +186,7 @@ function formatarMarkdown(texto) {
   );
 }
 
-function exibirModal(conteudo) {
+function exibirModal(conteudo, sugestoes = []) {
   const modalAntigo = document.getElementById("modalResultado");
   if (modalAntigo) modalAntigo.remove();
 
@@ -196,7 +197,7 @@ function exibirModal(conteudo) {
     <div class="modal-content">
       <button class="fechar-btn" title="Fechar resultado">&times;</button>
       <h2>Seu plano está pronto!</h2>
-      <div class="resultado-formatado">${conteudo}</div>
+      <div class="resultado-formatado">${conteudo}${planRenderSugestoesBlock(sugestoes)}</div>
     </div>
   `;
 
@@ -207,6 +208,10 @@ function exibirModal(conteudo) {
   modal.addEventListener('click', (e) => {
     if (e.target === modal) modal.remove();
   });
+
+  planBindSugestoesContainer(modal, sugestoes, (mensagem) =>
+    mostrarFeedback(mensagem, 'erro'),
+  );
 }
 
 // Eventos dos botões

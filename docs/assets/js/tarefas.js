@@ -1089,12 +1089,18 @@ function getPendingTasksStorageKey(userId) {
 }
 
 // Função para adicionar tarefa a partir do plano gerado
-function addTaskFromPlan(taskTitle) {
+// Aceita tanto uma string (formato antigo) quanto um objeto {title, priority, deadline}
+function addTaskFromPlan(taskOrTitle) {
+  const isObject = taskOrTitle && typeof taskOrTitle === "object";
+  const rawTitle = isObject ? taskOrTitle.title : taskOrTitle;
+  const title = rawTitle == null ? "" : String(rawTitle).trim();
+  if (!title) return;
+
   const task = {
     id: Date.now() + Math.random(),
-    title: taskTitle,
-    priority: "media",
-    deadline: "",
+    title,
+    priority: (isObject && taskOrTitle.priority) || "media",
+    deadline: (isObject && taskOrTitle.deadline) || "",
     completed: false,
     isRoutine: false,
     createdAt: new Date().toISOString(),
@@ -1108,15 +1114,56 @@ function addTaskFromPlan(taskTitle) {
   }
 }
 
-// Mostrar notificação de tarefas adicionadas
+// Função para adicionar hábito a partir do plano gerado pela IA
+function addHabitFromPlan(habit) {
+  const rawName = habit && habit.title;
+  const name = rawName == null ? "" : String(rawName).trim();
+  if (!name) return;
+
+  const goalMinutes = Number(habit && habit.goalMinutes) || 30;
+  const idealTime = (habit && habit.idealTime) || "09:00";
+
+  const newHabit = {
+    id: Date.now() + Math.random(),
+    name,
+    goalMinutes,
+    idealTime,
+    xpReward: getHabitXp(goalMinutes),
+    completedToday: false,
+    totalCompletions: 0,
+    totalDurationSeconds: 0,
+    totalSessions: 0,
+    lastDurationSeconds: 0,
+    createdAt: new Date().toISOString(),
+  };
+
+  state.habits.push(newHabit);
+  save("habits");
+
+  if (typeof renderHabits === "function") {
+    renderHabits();
+  }
+}
+
+// Mostrar notificação de tarefas/hábitos adicionados
 function showTasksAddedNotification() {
-  const count = localStorage.getItem("planly_tasks_added_count");
-  if (count && count > 0) {
+  const tasksCount = Number(localStorage.getItem("planly_tasks_added_count")) || 0;
+  const habitsCount = Number(localStorage.getItem("planly_habits_added_count")) || 0;
+
+  if (tasksCount > 0 || habitsCount > 0) {
     setTimeout(() => {
+      const partes = [];
+      if (tasksCount > 0) {
+        partes.push(`${tasksCount} ${tasksCount == 1 ? "tarefa" : "tarefas"}`);
+      }
+      if (habitsCount > 0) {
+        partes.push(`${habitsCount} ${habitsCount == 1 ? "hábito" : "hábitos"}`);
+      }
       notify(
-        `<i class="fas fa-check-circle"></i> ${count} ${count == 1 ? "tarefa adicionada" : "tarefas adicionadas"} do plano!`,
+        `<i class="fas fa-check-circle"></i> ${partes.join(" e ")} adicionado(s) do plano!`,
       );
       localStorage.removeItem("planly_tasks_added_count");
+      localStorage.removeItem("planly_habits_added_count");
     }, 300);
   }
 }
@@ -1141,10 +1188,33 @@ function importPendingPlanTasks(userId = getCurrentUserId()) {
   if (!pending) return;
 
   try {
-    const tasks = JSON.parse(pending);
-    if (Array.isArray(tasks) && tasks.length > 0) {
-      tasks.forEach((taskTitle) => addTaskFromPlan(taskTitle));
-      localStorage.setItem("planly_tasks_added_count", tasks.length);
+    const items = JSON.parse(pending);
+    if (Array.isArray(items) && items.length > 0) {
+      let tasksAdded = 0;
+      let habitsAdded = 0;
+
+      items.forEach((item) => {
+        // Formato antigo: string simples = sempre tarefa
+        if (typeof item === "string") {
+          addTaskFromPlan(item);
+          tasksAdded++;
+          return;
+        }
+        if (item && item.type === "habito") {
+          addHabitFromPlan(item);
+          habitsAdded++;
+        } else {
+          addTaskFromPlan(item);
+          tasksAdded++;
+        }
+      });
+
+      if (tasksAdded > 0) {
+        localStorage.setItem("planly_tasks_added_count", tasksAdded);
+      }
+      if (habitsAdded > 0) {
+        localStorage.setItem("planly_habits_added_count", habitsAdded);
+      }
     }
   } catch (err) {
     console.error("Erro ao importar tarefas pendentes:", err);
@@ -1157,6 +1227,7 @@ function importPendingPlanTasks(userId = getCurrentUserId()) {
 
 // Expor funções globalmente
 window.addTaskFromPlan = addTaskFromPlan;
+window.addHabitFromPlan = addHabitFromPlan;
 
 // Mostrar notificação ao carregar página se tarefas foram adicionadas
 function onTasksPageReady() {
