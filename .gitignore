@@ -1,6 +1,7 @@
 # Variáveis de ambiente (chaves API)
 .env
 .env.*
+!.env.example
 
 # Python
 __pycache__/

@@ -2,6 +2,8 @@ name: Release Pipeline - GitHub Pages
 
 on:
   push:
+    branches:
+      - main
     tags:
       - "v*.*.*"
   workflow_dispatch:
@@ -25,6 +27,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Inject Firebase API Key
+        run: |
+          if [ -z "${{ secrets.FIREBASE_API_KEY }}" ]; then
+            echo "::error::FIREBASE_API_KEY secret is not configured in GitHub Secrets!"
+            exit 1
+          fi
+          sed -i 's/__FIREBASE_API_KEY__/${{ secrets.FIREBASE_API_KEY }}/g' docs/assets/js/firebase-config.js
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

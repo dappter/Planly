@@ -29,6 +29,18 @@ def index():
     return send_from_directory('docs', 'index.html')
 
 
+@app.route('/assets/js/firebase-config.js')
+def serve_firebase_config():
+    firebase_key = os.getenv("FIREBASE_API_KEY")
+    file_path = os.path.join('docs', 'assets', 'js', 'firebase-config.js')
+    if firebase_key and os.path.exists(file_path):
+        with open(file_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        content = content.replace('__FIREBASE_API_KEY__', firebase_key)
+        return app.response_class(content, mimetype='application/javascript')
+    return send_from_directory('docs', 'assets/js/firebase-config.js')
+
+
 @app.route('/<path:filename>')
 def serve_static(filename):
     return send_from_directory('docs', filename)
