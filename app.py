@@ -6,11 +6,12 @@ import json
 import re
 from concurrent.futures import ThreadPoolExecutor
 from google import genai
-from google.genai import types
+from google.genai import types, errors as genai_errors
 
 # Configuração
+MATERIAL_MAX_MB = 15
 app = Flask(__name__, static_folder='docs')
-app.config['MAX_CONTENT_LENGTH'] = 15 * 1024 * 1024  # 15MB
+app.config['MAX_CONTENT_LENGTH'] = MATERIAL_MAX_MB * 1024 * 1024
 CORS(app, resources={r"/*": {"origins": [
     "https://dappter.github.io",
     "http://localhost:8080",
@@ -22,16 +23,48 @@ CORS(app, resources={r"/*": {"origins": [
 
 @app.errorhandler(413)
 def arquivo_muito_grande(e):
-    return jsonify({"erro": "Arquivo muito grande. O limite é 15MB."}), 413
+    return jsonify({"erro": f"Arquivo muito grande. O limite é {MATERIAL_MAX_MB}MB."}), 413
+
+# "latest" sempre aponta para a versão estável mais recente da linha Flash do
+# Gemini, sem precisar atualizar o código quando o Google lançar uma nova versão.
+GEMINI_MODEL = "gemini-flash-latest"
+
+# Retry embutido do próprio SDK (baseado em tenacity, com backoff exponencial +
+# jitter) para sobrecarga transitória do lado do Google — 2 tentativas no total
+# para não prender uma thread do servidor por muito tempo num pico de erros.
+# 429 (RESOURCE_EXHAUSTED / cota) fica de fora de propósito: a API do Gemini
+# costuma pedir dezenas de segundos de espera para resetar a cota, tempo longo
+# demais para valer a pena segurar uma resposta HTTP síncrona — esse caso é
+# tratado à parte em resposta_erro_gemini(), com uma mensagem clara em vez de retry.
+GEMINI_RETRY_OPTIONS = types.HttpRetryOptions(
+    attempts=2,
+    initial_delay=1.5,
+    max_delay=3.0,
+    http_status_codes=[500, 502, 503, 504],
+)
 
 load_dotenv()
 api_key = os.getenv("API_KEY")
 
 if api_key:
-    client = genai.Client(api_key=api_key)
+    client = genai.Client(
+        api_key=api_key,
+        http_options=types.HttpOptions(retry_options=GEMINI_RETRY_OPTIONS),
+    )
 else:
     client = None
     print("⚠️  API_KEY não configurada - funcionalidades de IA desabilitadas")
+
+
+def resposta_erro_gemini(e):
+    """Traduz uma exceção da chamada ao Gemini numa resposta HTTP amigável.
+    Cota excedida (429) recebe uma mensagem específica, já que o usuário
+    precisa esperar (não é algo que um retry imediato resolva)."""
+    if isinstance(e, genai_errors.APIError) and e.code == 429:
+        return jsonify({
+            "erro": "Limite de uso gratuito da IA atingido no momento. Aguarde cerca de 1 minuto e tente novamente."
+        }), 429
+    return jsonify({"erro": f"Erro na API Gemini: {str(e)}"}), 500
 
 
 # ===== ROTAS PRINCIPAIS =====
@@ -100,10 +133,13 @@ def gerar_plano():
 
     # As duas chamadas à IA usam apenas os mesmos rotina/interesse (não dependem
     # uma da outra), então rodam em paralelo em vez de dobrar a latência do request.
-    with ThreadPoolExecutor(max_workers=2) as executor:
+    # shutdown(wait=False) é usado explicitamente (em vez de "with") para que um
+    # erro no plano principal não prenda a resposta esperando a outra chamada.
+    executor = ThreadPoolExecutor(max_workers=2)
+    try:
         plano_future = executor.submit(
             client.models.generate_content,
-            model='gemini-2.5-flash',
+            model=GEMINI_MODEL,
             contents=prompt,
         )
         sugestoes_future = executor.submit(gerar_sugestoes_tarefas, rotina, interesse)
@@ -111,9 +147,11 @@ def gerar_plano():
         try:
             resposta = plano_future.result()
         except Exception as e:
-            return jsonify({"erro": f"Erro na API Gemini: {str(e)}"}), 500
+            return resposta_erro_gemini(e)
 
         tarefas_sugeridas = sugestoes_future.result()
+    finally:
+        executor.shutdown(wait=False)
 
     return jsonify({"resultado": resposta.text, "tarefas_sugeridas": tarefas_sugeridas})
 
@@ -191,7 +229,7 @@ def gerar_sugestoes_tarefas(rotina, interesse):
     """
     try:
         resposta = client.models.generate_content(
-            model='gemini-2.5-flash',
+            model=GEMINI_MODEL,
             contents=prompt,
             config=types.GenerateContentConfig(response_mime_type="application/json"),
         )
@@ -242,15 +280,18 @@ def analisar_rotina():
 
     try:
         resposta = client.models.generate_content(
-            model='gemini-2.5-flash',
+            model=GEMINI_MODEL,
             contents=prompt
         )
         return jsonify({"resultado": resposta.text})
     except Exception as e:
-        return jsonify({"erro": f"Erro na API Gemini: {str(e)}"}), 500
+        return resposta_erro_gemini(e)
 
 
-MATERIAL_MAX_BYTES = 15 * 1024 * 1024  # 15MB
+MATERIAL_MAX_BYTES = MATERIAL_MAX_MB * 1024 * 1024
+# Mantém o prompt enxuto e evita que um contexto muito longo (ou com texto
+# tentando instruir o modelo) desvie a IA do formato JSON esperado.
+CONTEXTO_MAX_CHARS = 120
 
 
 @app.route('/analisar-material', methods=['POST'])
@@ -269,9 +310,9 @@ def analisar_material():
     if not pdf_bytes:
         return jsonify({"erro": "Arquivo vazio ou inválido"}), 400
     if len(pdf_bytes) > MATERIAL_MAX_BYTES:
-        return jsonify({"erro": "Arquivo muito grande. O limite é 15MB."}), 400
+        return jsonify({"erro": f"Arquivo muito grande. O limite é {MATERIAL_MAX_MB}MB."}), 400
 
-    contexto = request.form.get("contexto", "").strip()
+    contexto = request.form.get("contexto", "").strip()[:CONTEXTO_MAX_CHARS]
 
     prompt = f"""
     Analise o conteúdo do PDF em anexo (material de aula/estudo{f' sobre {contexto}' if contexto else ''})
@@ -301,7 +342,7 @@ def analisar_material():
 
     try:
         resposta = client.models.generate_content(
-            model='gemini-2.5-flash',
+            model=GEMINI_MODEL,
             contents=[
                 types.Part.from_bytes(data=pdf_bytes, mime_type='application/pdf'),
                 prompt,
@@ -312,17 +353,74 @@ def analisar_material():
     except json.JSONDecodeError:
         return jsonify({"erro": "A IA retornou um formato inesperado. Tente novamente."}), 500
     except Exception as e:
-        return jsonify({"erro": f"Erro na API Gemini: {str(e)}"}), 500
+        return resposta_erro_gemini(e)
 
     if not isinstance(resultado, dict):
         return jsonify({"erro": "A IA retornou um formato inesperado. Tente novamente."}), 500
 
-    resultado.setdefault("resumo_plano", "")
-    resultado.setdefault("questoes", [])
-    resultado.setdefault("flashcards", [])
+    resultado["resumo_plano"] = str(resultado.get("resumo_plano") or "")
+    resultado["questoes"] = sanitizar_questoes(resultado.get("questoes"))
+    resultado["flashcards"] = sanitizar_flashcards(resultado.get("flashcards"))
     resultado["tarefas_sugeridas"] = sanitizar_sugestoes(resultado.get("tarefas_sugeridas"))
 
     return jsonify(resultado)
+
+
+def sanitizar_questoes(questoes):
+    """Garante que cada questão tenha pergunta, alternativas e um índice de
+    resposta correta válidos antes de chegar ao cliente."""
+    if not isinstance(questoes, list):
+        return []
+
+    sanitizadas = []
+    for questao in questoes:
+        if not isinstance(questao, dict):
+            continue
+
+        pergunta = str(questao.get("pergunta", "")).strip()
+        alternativas = questao.get("alternativas")
+        if not pergunta or not isinstance(alternativas, list):
+            continue
+
+        # Não descarta alternativas vazias individualmente: isso deslocaria os
+        # índices e faria resposta_correta apontar para a opção errada. Se
+        # alguma alternativa vier em branco, a questão inteira é descartada.
+        alternativas = [str(a).strip() for a in alternativas]
+        if len(alternativas) < 2 or len(alternativas) > 6 or any(not a for a in alternativas):
+            continue
+
+        resposta_correta = questao.get("resposta_correta")
+        if not isinstance(resposta_correta, int) or not (0 <= resposta_correta < len(alternativas)):
+            continue
+
+        sanitizadas.append({
+            "pergunta": pergunta,
+            "alternativas": alternativas,
+            "resposta_correta": resposta_correta,
+            "explicacao": str(questao.get("explicacao", "")).strip(),
+        })
+
+    return sanitizadas
+
+
+def sanitizar_flashcards(flashcards):
+    """Garante que cada flashcard tenha frente e verso não vazios."""
+    if not isinstance(flashcards, list):
+        return []
+
+    sanitizados = []
+    for card in flashcards:
+        if not isinstance(card, dict):
+            continue
+
+        frente = str(card.get("frente", "")).strip()
+        verso = str(card.get("verso", "")).strip()
+        if not frente or not verso:
+            continue
+
+        sanitizados.append({"frente": frente, "verso": verso})
+
+    return sanitizados
 
 
 # ===== INICIALIZAÇÃO =====

@@ -313,13 +313,20 @@ function renderMaterialResult(data) {
 }
 
 // ===== Carregar último resultado salvo =====
+// DOMContentLoaded e planly-auth-ready podem ambos disparar (o segundo
+// confirma a sessão do Firebase depois do primeiro), então usamos essa flag
+// para nunca renderizar duas vezes e resetar o quiz/flashcards no meio de uso.
+let materialCarregado = false;
+
 function loadStoredMaterial() {
+  if (materialCarregado) return;
   const userId = getCurrentUserId();
   if (!userId || userId === "guest") return;
   const stored = localStorage.getItem(getMaterialStorageKey(userId));
   if (!stored) return;
   try {
     renderMaterialResult(JSON.parse(stored));
+    materialCarregado = true;
   } catch (err) {
     console.error("Erro ao carregar material salvo:", err);
   }
