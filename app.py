@@ -56,14 +56,37 @@ else:
     print("⚠️  API_KEY não configurada - funcionalidades de IA desabilitadas")
 
 
+def cota_diaria_excedida(e):
+    """Verifica se um erro 429 é por causa da cota DIÁRIA (reseta 1x por dia)
+    em vez da cota por minuto (reseta em segundos) — o texto da mensagem do
+    Gemini sempre sugere um retryDelay curto mesmo quando é a cota diária,
+    então é preciso olhar o quotaId real para não informar um tempo de espera
+    errado ao usuário."""
+    detalhes = getattr(e, "details", None)
+    if not isinstance(detalhes, dict):
+        return False
+    erro_detalhes = detalhes.get("error", {}).get("details", [])
+    for item in erro_detalhes:
+        for violacao in item.get("violations", []):
+            if "PerDay" in violacao.get("quotaId", ""):
+                return True
+    return False
+
+
 def resposta_erro_gemini(e):
     """Traduz uma exceção da chamada ao Gemini numa resposta HTTP amigável.
     Cota excedida (429) recebe uma mensagem específica, já que o usuário
     precisa esperar (não é algo que um retry imediato resolva)."""
     if isinstance(e, genai_errors.APIError) and e.code == 429:
-        return jsonify({
-            "erro": "Limite de uso gratuito da IA atingido no momento. Aguarde cerca de 1 minuto e tente novamente."
-        }), 429
+        if cota_diaria_excedida(e):
+            mensagem = (
+                "O limite diário gratuito da IA foi atingido. Ele reseta automaticamente "
+                "à meia-noite (horário do Pacífico, EUA) — ou ative o faturamento em "
+                "aistudio.google.com/apikeys para não depender desse limite."
+            )
+        else:
+            mensagem = "Limite de uso gratuito da IA atingido no momento. Aguarde cerca de 1 minuto e tente novamente."
+        return jsonify({"erro": mensagem}), 429
     return jsonify({"erro": f"Erro na API Gemini: {str(e)}"}), 500
 
 
