@@ -1,35 +1,35 @@
-const CACHE_NAME = "planly-v4";
+const CACHE_NAME = "planly-v5";
 const ASSETS = [
-  "/",
-  "/index.html",
-  "/tarefa.html",
-  "/mapa.html",
-  "/login.html",
-  "/register.html",
-  "/manifest.json",
-  "/assets/css/reset.css",
-  "/assets/css/style.css",
-  "/assets/css/tarefas.css",
-  "/assets/css/header.css",
-  "/assets/css/footer.css",
-  "/assets/css/section.css",
-  "/assets/css/form.css",
-  "/assets/css/exemple.css",
-  "/assets/css/result.css",
-  "/assets/css/mapa.css",
-  "/assets/js/pwa.js",
-  "/assets/js/auth.js",
-  "/assets/js/menu.js",
-  "/assets/js/theme.js",
-  "/assets/js/button.js",
-  "/assets/js/actions.js",
-  "/assets/js/tarefas.js",
-  "/assets/js/ranking.js",
-  "/assets/js/mapa.js",
-  "/assets/icons/icon.svg",
-  "/assets/icons/logo.svg",
-  "/assets/img/background-notebook.jpg",
-  "/assets/img/background-tasks.jpg",
+  "./",
+  "./index.html",
+  "./tarefa.html",
+  "./mapa.html",
+  "./login.html",
+  "./register.html",
+  "./manifest.json",
+  "./assets/css/reset.css",
+  "./assets/css/style.css",
+  "./assets/css/tarefas.css",
+  "./assets/css/header.css",
+  "./assets/css/footer.css",
+  "./assets/css/section.css",
+  "./assets/css/form.css",
+  "./assets/css/exemple.css",
+  "./assets/css/result.css",
+  "./assets/css/mapa.css",
+  "./assets/js/pwa.js",
+  "./assets/js/auth.js",
+  "./assets/js/menu.js",
+  "./assets/js/theme.js",
+  "./assets/js/button.js",
+  "./assets/js/actions.js",
+  "./assets/js/tarefas.js",
+  "./assets/js/ranking.js",
+  "./assets/js/mapa.js",
+  "./assets/icons/icon.svg",
+  "./assets/icons/logo.svg",
+  "./assets/img/background-notebook.jpg",
+  "./assets/img/background-tasks.jpg",
 ];
 
 self.addEventListener("install", (event) => {
@@ -58,6 +58,21 @@ self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
 
   const { request } = event;
+
+  // Sempre buscar firebase-config direto da rede para evitar cache da chave
+  if (request.url.includes("firebase-config.js")) {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
+          return response;
+        })
+        .catch(() => caches.match(request))
+    );
+    return;
+  }
+
   const isHTML =
     request.mode === "navigate" ||
     request.destination === "document" ||

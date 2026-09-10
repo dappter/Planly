@@ -10,7 +10,7 @@ import {
   onAuthStateChanged,
   signOut,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { firebaseConfig } from "./firebase-config.js";
+import { firebaseConfig } from "./firebase-config.js?v=5";
 
 // Inicializar Firebase
 const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
