@@ -152,6 +152,103 @@
       font-size: 14px;
     }
 
+    .forgot-link {
+      text-align: right;
+      margin-top: -8px;
+      margin-bottom: 20px;
+    }
+
+    .forgot-link a {
+      color: #667eea;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .forgot-link a:hover {
+      color: #764ba2;
+      text-decoration: underline;
+    }
+
+    /* Modal Esqueci a Senha */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(5px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+      box-sizing: border-box;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal-card {
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
+      transform: translateY(10px);
+      transition: transform 0.3s ease;
+    }
+
+    .modal-overlay.active .modal-card {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .modal-header h3 {
+      font-size: 22px;
+      color: #333;
+      font-weight: 700;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-close-modal {
+      background: none;
+      border: none;
+      font-size: 28px;
+      color: #888;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0;
+      transition: color 0.2s;
+    }
+
+    .btn-close-modal:hover {
+      color: #333;
+    }
+
+    .modal-desc {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
     @media (max-width: 480px) {
       .login-container {
         padding: 30px 20px;
@@ -186,14 +283,18 @@
         <input type="email" id="username" name="username" placeholder="seu@email.com" required>
       </div>
 
-      <div class="form-group">
+      <div class="form-group" style="margin-bottom: 12px;">
         <label for="password">
           <i class="fas fa-lock"></i> Senha
         </label>
         <input type="password" id="password" name="password" placeholder="Sua senha" required>
       </div>
 
-      <button type="submit" class="btn-login">
+      <div class="forgot-link">
+        <a href="#" id="forgotPasswordLink">Esqueci minha senha</a>
+      </div>
+
+      <button type="submit" class="btn-login" id="btnLogin">
         <i class="fas fa-sign-in-alt"></i> Entrar
       </button>
     </form>
@@ -203,11 +304,36 @@
     </div>
   </div>
 
+  <!-- Modal de Recuperação de Senha -->
+  <div class="modal-overlay" id="forgotModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3><i class="fas fa-key" style="color: #667eea;"></i> Recuperar Senha</h3>
+        <button type="button" class="btn-close-modal" id="closeForgotModal" aria-label="Fechar">&times;</button>
+      </div>
+      <p class="modal-desc">Digite seu e-mail cadastrado. Enviaremos um link seguro para você redefinir sua senha.</p>
+      
+      <div class="error-message" id="forgotErrorMessage"></div>
+      <div class="success-message" id="forgotSuccessMessage"></div>
+
+      <form id="forgotForm">
+        <div class="form-group">
+          <label for="forgotEmail"><i class="fas fa-envelope"></i> E-mail</label>
+          <input type="email" id="forgotEmail" placeholder="seu@email.com" required>
+        </div>
+        <button type="submit" class="btn-login" id="btnSendForgot">
+          <i class="fas fa-paper-plane"></i> Enviar Link de Recuperação
+        </button>
+      </form>
+    </div>
+  </div>
+
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
     import {
       getAuth,
-      signInWithEmailAndPassword
+      signInWithEmailAndPassword,
+      sendPasswordResetEmail
     } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
     import { firebaseConfig } from './assets/js/firebase-config.js';
 
@@ -217,7 +343,94 @@
     const form = document.getElementById('loginForm');
     const errorMessage = document.getElementById('errorMessage');
     const successMessage = document.getElementById('successMessage');
+    const btnLogin = document.getElementById('btnLogin');
 
+    // Elementos do Modal Esqueci Senha
+    const forgotLink = document.getElementById('forgotPasswordLink');
+    const forgotModal = document.getElementById('forgotModal');
+    const closeForgotModal = document.getElementById('closeForgotModal');
+    const forgotForm = document.getElementById('forgotForm');
+    const forgotEmailInput = document.getElementById('forgotEmail');
+    const forgotErrorMessage = document.getElementById('forgotErrorMessage');
+    const forgotSuccessMessage = document.getElementById('forgotSuccessMessage');
+    const btnSendForgot = document.getElementById('btnSendForgot');
+
+    // Abre modal de recuperação
+    forgotLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      forgotErrorMessage.style.display = 'none';
+      forgotSuccessMessage.style.display = 'none';
+      // Pré-preenche se o usuário já digitou o e-mail no login
+      const currentEmail = document.getElementById('username').value.trim();
+      if (currentEmail) {
+        forgotEmailInput.value = currentEmail;
+      }
+      forgotModal.classList.add('active');
+    });
+
+    // Fecha modal
+    closeForgotModal.addEventListener('click', () => {
+      forgotModal.classList.remove('active');
+    });
+
+    // Fecha modal clicando fora do card
+    forgotModal.addEventListener('click', (e) => {
+      if (e.target === forgotModal) {
+        forgotModal.classList.remove('active');
+      }
+    });
+
+    // Enviar e-mail de recuperação
+    forgotForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = forgotEmailInput.value.trim();
+
+      forgotErrorMessage.style.display = 'none';
+      forgotSuccessMessage.style.display = 'none';
+
+      if (!email) {
+        forgotErrorMessage.textContent = '❌ Por favor, digite seu e-mail.';
+        forgotErrorMessage.style.display = 'block';
+        return;
+      }
+
+      if (firebaseConfig.apiKey === '__FIREBASE_API_KEY__') {
+        forgotErrorMessage.innerHTML = '⚠️ Chave do Firebase não carregada. Inicie com <code>INICIAR_SERVIDOR.bat</code>.';
+        forgotErrorMessage.style.display = 'block';
+        return;
+      }
+
+      btnSendForgot.disabled = true;
+      btnSendForgot.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+
+      try {
+        await sendPasswordResetEmail(auth, email);
+        forgotSuccessMessage.innerHTML = '✅ Link enviado com sucesso! Verifique sua caixa de entrada e pasta de spam.';
+        forgotSuccessMessage.style.display = 'block';
+        forgotForm.reset();
+      } catch (error) {
+        console.error('Erro ao enviar e-mail de recuperação:', error);
+        let msg = '❌ Erro ao enviar link de recuperação.';
+        if (error.code === 'auth/user-not-found') {
+          msg = '❌ Nenhum usuário cadastrado com este e-mail.';
+        } else if (error.code === 'auth/invalid-email') {
+          msg = '❌ Formato de e-mail inválido.';
+        } else if (error.code === 'auth/too-many-requests') {
+          msg = '❌ Muitas tentativas. Aguarde alguns minutos.';
+        } else if (error.code === 'auth/operation-not-allowed') {
+          msg = '❌ Provedor de E-mail não habilitado no Firebase Console.';
+        } else {
+          msg = `❌ Erro (${error.code || error.message || 'desconhecido'}).`;
+        }
+        forgotErrorMessage.textContent = msg;
+        forgotErrorMessage.style.display = 'block';
+      } finally {
+        btnSendForgot.disabled = false;
+        btnSendForgot.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar Link de Recuperação';
+      }
+    });
+
+    // Formulário de Login
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
@@ -233,6 +446,15 @@
         return;
       }
 
+      if (firebaseConfig.apiKey === '__FIREBASE_API_KEY__') {
+        errorMessage.innerHTML = '⚠️ <strong>Chave do Firebase não carregada.</strong><br>Se estiver testando no seu computador, abra pelo script <code>INICIAR_SERVIDOR.bat</code> (ele injeta a chave local do .env).';
+        errorMessage.style.display = 'block';
+        return;
+      }
+
+      btnLogin.disabled = true;
+      btnLogin.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Entrando...';
+
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
 
@@ -244,7 +466,7 @@
 
         setTimeout(() => {
           window.location.href = 'index.html';
-        }, 1000);
+        }, 800);
       } catch (error) {
         console.error('Erro no login:', error);
 
@@ -255,11 +477,24 @@
         } else if (error.code === 'auth/invalid-email') {
           errorMsg = '❌ E-mail inválido!';
         } else if (error.code === 'auth/too-many-requests') {
-          errorMsg = '❌ Muitas tentativas. Aguarde alguns minutos.';
+          errorMsg = '❌ Muitas tentativas incorretas. Aguarde alguns minutos.';
+        } else if (error.code === 'auth/operation-not-allowed') {
+          errorMsg = '❌ O login por E-mail/Senha não está ativado no Firebase Console (Authentication > Sign-in method).';
+        } else if (error.code === 'auth/api-key-not-valid' || error.code === 'auth/invalid-api-key') {
+          errorMsg = '❌ Chave de API do Firebase inválida. Reinicie o servidor local ou confira a chave no .env.';
+        } else if (error.code === 'auth/network-request-failed') {
+          errorMsg = '❌ Falha de conexão. Verifique sua internet.';
+        } else if (error.code === 'auth/user-disabled') {
+          errorMsg = '❌ Esta conta foi desativada.';
+        } else {
+          errorMsg = `❌ Erro ao fazer login (${error.code || error.message || 'desconhecido'}).`;
         }
 
         errorMessage.textContent = errorMsg;
         errorMessage.style.display = 'block';
+      } finally {
+        btnLogin.disabled = false;
+        btnLogin.innerHTML = '<i class="fas fa-sign-in-alt"></i> Entrar';
       }
     });
   </script>

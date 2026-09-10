@@ -207,7 +207,7 @@
         <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Digite a senha novamente" required>
       </div>
 
-      <button type="submit" class="btn-register">
+      <button type="submit" class="btn-register" id="btnRegister">
         <i class="fas fa-user-plus"></i> Criar Conta
       </button>
     </form>
@@ -232,6 +232,7 @@
     const form = document.getElementById('registerForm');
     const errorMessage = document.getElementById('errorMessage');
     const successMessage = document.getElementById('successMessage');
+    const btnRegister = document.getElementById('btnRegister');
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -263,6 +264,15 @@
         return;
       }
 
+      if (firebaseConfig.apiKey === '__FIREBASE_API_KEY__') {
+        errorMessage.innerHTML = '⚠️ <strong>Chave do Firebase não carregada.</strong><br>Se estiver testando localmente, abra pelo script <code>INICIAR_SERVIDOR.bat</code>.';
+        errorMessage.style.display = 'block';
+        return;
+      }
+
+      btnRegister.disabled = true;
+      btnRegister.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Criando conta...';
+
       try {
         // Criar usuário no Firebase
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -292,10 +302,21 @@
           errorMsg = '❌ E-mail inválido!';
         } else if (error.code === 'auth/weak-password') {
           errorMsg = '❌ Senha muito fraca! Use pelo menos 6 caracteres.';
+        } else if (error.code === 'auth/operation-not-allowed') {
+          errorMsg = '❌ O cadastro por E-mail/Senha não está ativado no Firebase Console (Authentication > Sign-in method).';
+        } else if (error.code === 'auth/api-key-not-valid' || error.code === 'auth/invalid-api-key') {
+          errorMsg = '❌ Chave de API do Firebase inválida. Reinicie o servidor local ou confira a chave no .env.';
+        } else if (error.code === 'auth/network-request-failed') {
+          errorMsg = '❌ Falha de conexão. Verifique sua internet.';
+        } else {
+          errorMsg = `❌ Erro ao criar conta (${error.code || error.message || 'desconhecido'}).`;
         }
 
         errorMessage.textContent = errorMsg;
         errorMessage.style.display = 'block';
+      } finally {
+        btnRegister.disabled = false;
+        btnRegister.innerHTML = '<i class="fas fa-user-plus"></i> Criar Conta';
       }
     });
   </script>
