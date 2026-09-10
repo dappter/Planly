@@ -12,5 +12,5 @@ echo.
 echo Pressione Ctrl+C para parar
 echo ====================================
 echo.
-"c:\Planly - Atualizado\.venv\Scripts\python.exe" app.py
+"%~dp0.venv\Scripts\python.exe" app.py
 pause
