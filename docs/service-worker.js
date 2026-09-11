@@ -1,4 +1,4 @@
-const CACHE_NAME = "planly-v6";
+const CACHE_NAME = "planly-v7";
 const ASSETS = [
   "./",
   "./index.html",
@@ -96,7 +96,7 @@ self.addEventListener("fetch", (event) => {
         .catch(() =>
           caches
             .match(request)
-            .then((cached) => cached || caches.match("/index.html")),
+            .then((cached) => cached || caches.match("./index.html")),
         ),
     );
     return;

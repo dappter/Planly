@@ -1,7 +1,9 @@
 {
   "name": "Planly",
   "short_name": "Planly",
-  "start_url": "/index.html",
+  "id": "./",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#1e1e1e",
   "theme_color": "#8c52ff",
